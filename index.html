@@ -316,14 +316,13 @@ function toggleHist(){
   });
   p.innerHTML=html;p.style.display='';
 }
-// ===== 日常任务（每日重置） =====
+// ===== 日常任务（每日重置-仅清空勾选） =====
 var mmLastDate=ld('mmDate','');var mmToday=gtk();
 if(mmLastDate!==mmToday){
-  var mmData=ld('mindmap',{children:[{label:'电商',done:false,children:[{label:'上新',done:false},{label:'客服',done:false},{label:'发货',done:false}]},{label:'自媒体',done:false,children:[{label:'写文案',done:false},{label:'拍摄',done:false},{label:'发布',done:false}]},{label:'个人',done:false,children:[{label:'学习',done:false},{label:'复盘',done:false}]}]});
+  var mmData=ld('mindmap',{children:[]});
   if(mmData.children)mmData.children.forEach(function(c){c.done=false;if(c.children)c.children.forEach(function(s){s.done=false;});});
   sd('mindmap',mmData);sd('mmDate',mmToday);
 }
-var mmData=ld('mindmap',{children:[{label:'电商',done:false,children:[{label:'上新',done:false},{label:'客服',done:false},{label:'发货',done:false}]},{label:'自媒体',done:false,children:[{label:'写文案',done:false},{label:'拍摄',done:false},{label:'发布',done:false}]},{label:'个人',done:false,children:[{label:'学习',done:false},{label:'复盘',done:false}]}]});
 // ===== 待开发 =====
 function rdt(){var l=document.getElementById('devTaskList'),t=ld('devTasks',[]);t.sort(function(a,b){if(a.done&&!b.done)return 1;if(!a.done&&b.done)return -1;return 0;});l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'✓':'';ic.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='✕';btn.onclick=function(){t.splice(i,1);sd('devTasks',t);rdt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
 function adt(){var i=document.getElementById('devTaskInput'),t=i.value.trim();if(!t)return;var ts=ld('devTasks',[]);ts.push({text:t,done:false});sd('devTasks',ts);rdt();i.value='';i.focus();}
