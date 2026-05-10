@@ -263,8 +263,14 @@ function ld(k,d){try{var v=localStorage.getItem('zhuye2_'+k);return v?JSON.parse
   fetch('https://lmfvfaobkmraiajodede.supabase.co/rest/v1/app_data',{
     headers:{'apikey':'sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Authorization':'Bearer sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq'}
   }).then(function(r){return r.json();}).then(function(rows){
+    var hasData=false;
     if(rows&&rows.length){
-      rows.forEach(function(row){if(row.id&&row.data)localStorage.setItem('zhuye2_'+row.id,JSON.stringify(row.data));});
+      rows.forEach(function(row){if(row.id&&row.data){localStorage.setItem('zhuye2_'+row.id,JSON.stringify(row.data));hasData=true;}});
+    }
+    if(hasData){
+      // 数据同步完成后再执行每日重置和归档
+      runDailyReset();
+      runMainTaskArchive();
     }
     sessionStorage.setItem('zhuye2_synced','1');
     location.reload();
@@ -280,7 +286,8 @@ var it;document.getElementById('dailyIncome').addEventListener('input',function(
 ldi();
 // ===== 主线任务（次日自动归档） =====
 // 归档昨日已完成
-(function(){var ld_=ld('mtDate',''),td_=gtk();if(ld_!==td_){var ts_=ld('mainTasks',[]),done_=[];for(var i_=ts_.length-1;i_>=0;i_--){if(ts_[i_].done){done_.push(ts_[i_]);ts_.splice(i_,1);}}if(done_.length&&ld_){var h_=ld('taskHistory',{});if(!h_[ld_])h_[ld_]=[];done_.forEach(function(t){h_[ld_].push({text:t.text,time:'归档'});});sd('taskHistory',h_);}sd('mainTasks',ts_);sd('mtDate',td_);}})();
+function runMainTaskArchive(){var ld_=ld('mtDate',''),td_=gtk();if(ld_!==td_){var ts_=ld('mainTasks',[]),done_=[];for(var i_=ts_.length-1;i_>=0;i_--){if(ts_[i_].done){done_.push(ts_[i_]);ts_.splice(i_,1);}}if(done_.length&&ld_){var h_=ld('taskHistory',{});if(!h_[ld_])h_[ld_]=[];done_.forEach(function(t){h_[ld_].push({text:t.text,time:'归档'});});sd('taskHistory',h_);}sd('mainTasks',ts_);sd('mtDate',td_);}}
+if(localStorage.getItem('zhuye2_mainTasks')){runMainTaskArchive();}
 function rmt(){var l=document.getElementById('mainTaskList'),t=ld('mainTasks',[]);l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'✓':'';ic.onclick=function(){e.done=!e.done;sd('mainTasks',t);rmt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('mainTasks',t);rmt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='✕';btn.onclick=function(){t.splice(i,1);sd('mainTasks',t);rmt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
 function amt(){var i=document.getElementById('mainTaskInput'),t=i.value.trim();if(!t)return;var ts=ld('mainTasks',[]);ts.push({text:t,done:false});sd('mainTasks',ts);rmt();i.value='';i.focus();}
 document.getElementById('mainTaskInput').addEventListener('keydown',function(e){if(e.key==='Enter')amt();});rmt();
@@ -303,11 +310,20 @@ function toggleHist(){
   p.innerHTML=html;p.style.display='';
 }
 // ===== 日常任务（每日重置-仅清空勾选） =====
+function runDailyReset(){
+  var mmLastDate=ld('mmDate','');var mmToday=gtk();
+  if(mmLastDate!==mmToday){
+    var mmData=ld('mindmap',null);
+    if(mmData&&mmData.children&&mmData.children.length){
+      mmData.children.forEach(function(c){c.done=false;if(c.children)c.children.forEach(function(s){s.done=false;});});
+      sd('mindmap',mmData);
+    }
+    sd('mmDate',mmToday);
+  }
+}
 var mmLastDate=ld('mmDate','');var mmToday=gtk();
-if(mmLastDate!==mmToday){
-  var mmData=ld('mindmap',{children:[]});
-  if(mmData.children)mmData.children.forEach(function(c){c.done=false;if(c.children)c.children.forEach(function(s){s.done=false;});});
-  sd('mindmap',mmData);sd('mmDate',mmToday);
+if(mmLastDate!==mmToday&&localStorage.getItem('zhuye2_mindmap')){
+  runDailyReset();
 }
 // ===== 待开发 =====
 function rdt(){var l=document.getElementById('devTaskList'),t=ld('devTasks',[]);t.sort(function(a,b){if(a.done&&!b.done)return 1;if(!a.done&&b.done)return -1;return 0;});l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'✓':'';ic.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='✕';btn.onclick=function(){t.splice(i,1);sd('devTasks',t);rdt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
