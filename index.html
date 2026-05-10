@@ -257,32 +257,19 @@ function sd(k,d){
   }).catch(function(){});
 }
 function ld(k,d){try{var v=localStorage.getItem('zhuye2_'+k);return v?JSON.parse(v):d;}catch(e){return d;}}
-// 数据同步：本地有数据就推上去，本地空就从云端拉
+// 每次打开都从云端拉最新数据到本地
 (function(){
-  var keys=['incomes','mainTasks','taskHistory','links','mindmap','mmDate','quote','devTasks','mtDate'];
-  var hasLocal=false;
-  keys.forEach(function(k){if(localStorage.getItem('zhuye2_'+k))hasLocal=true;});
-  if(hasLocal){
-    // 本地有数据 → 推上云端
-    keys.forEach(function(k){
-      var v=localStorage.getItem('zhuye2_'+k);
-      if(v) fetch('https://lmfvfaobkmraiajodede.supabase.co/rest/v1/app_data',{
-        method:'POST',
-        headers:{'apikey':'sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Authorization':'Bearer sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},
-        body:JSON.stringify({id:k,data:JSON.parse(v)})
-      }).catch(function(){});
-    });
-  }else{
-    // 本地没数据 → 从云端拉
-    fetch('https://lmfvfaobkmraiajodede.supabase.co/rest/v1/app_data',{
-      headers:{'apikey':'sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Authorization':'Bearer sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq'}
-    }).then(function(r){return r.json();}).then(function(rows){
-      if(rows&&rows.length){
-        rows.forEach(function(row){if(row.id&&row.data)localStorage.setItem('zhuye2_'+row.id,JSON.stringify(row.data));});
-        location.reload();
-      }
-    }).catch(function(){});
-  }
+  fetch('https://lmfvfaobkmraiajodede.supabase.co/rest/v1/app_data',{
+    headers:{'apikey':'sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Authorization':'Bearer sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq'}
+  }).then(function(r){return r.json();}).then(function(rows){
+    if(rows&&rows.length){
+      rows.forEach(function(row){if(row.id&&row.data)localStorage.setItem('zhuye2_'+row.id,JSON.stringify(row.data));});
+      // 如果本地已有数据但云端更新，刷新页面
+      var hasLocal=false,keys=['incomes','mainTasks','taskHistory','links','mindmap','mmDate','quote','devTasks','mtDate'];
+      keys.forEach(function(k){if(localStorage.getItem('zhuye2_'+k))hasLocal=true;});
+      if(hasLocal)location.reload();
+    }
+  }).catch(function(){});
 })();
 // ===== 收入 =====
 function ud(){var d=new Date(),w=['日','一','二','三','四','五','六'];document.getElementById('dateDisplay').textContent=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 周'+w[d.getDay()];}
