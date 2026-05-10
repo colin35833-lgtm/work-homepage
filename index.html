@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作主页</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#f5f5f7;color:#1d1d1f;padding:20px;min-height:100vh}
+.container{max-width:1400px;margin:0 auto}
+.header{margin-bottom:20px}
+.header h1{font-size:22px;font-weight:600;letter-spacing:-0.3px;color:#1d1d1f}
+.header p{font-size:13px;color:#86868b;margin-top:2px}
+.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.06)}
+.card-title{font-size:15px;font-weight:600;margin-bottom:14px;color:#1d1d1f;display:flex;align-items:center;gap:8px}
+.card-title .icon{width:20px;height:20px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex-shrink:0}
+.income-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.income-item{background:#fafafa;border-radius:10px;padding:16px;border:1px solid rgba(0,0,0,.04)}
+.income-label{font-size:12px;color:#86868b;margin-bottom:6px}
+.income-value{font-size:26px;font-weight:600;display:flex;align-items:center;gap:8px}
+.income-value .symbol{font-size:18px;color:#86868b;font-weight:400}
+.income-input{width:100%;border:none;background:transparent;font-size:26px;font-weight:600;color:#1d1d1f;outline:none;border-bottom:2px solid transparent;transition:border-color .2s;padding:2px 0}
+.income-input:focus{border-color:#0066cc}
+.income-input::placeholder{color:#c7c7cc;font-weight:400}
+.task-row{display:grid;grid-template-columns:750px 1fr;gap:16px;margin-bottom:16px}
+.task-col{display:flex;flex-direction:column;gap:16px}
+.task-input-row{display:flex;gap:8px;margin-bottom:10px}
+.task-input-row input{flex:1;padding:8px 12px;border:1px solid #d2d2d7;border-radius:8px;font-size:13px;outline:none;transition:border-color .2s}
+.task-input-row input:focus{border-color:#0066cc}
+.task-input-row button{padding:8px 16px;background:#0066cc;color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;white-space:nowrap;transition:background .2s}
+.task-input-row button:hover{background:#0055b3}
+.task-list{list-style:none}
+.task-list li{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;margin-bottom:4px;font-size:13px;transition:all .15s}
+.task-list li.pending{background:#e86050}
+.task-list li.pending:hover{background:#fac775}
+.task-list li.done-item{background:#c0dd97}
+.task-list li.done-item:hover{background:#97c459}
+.task-list li .task-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;border:1.5px solid #d2d2d7;transition:all .2s;cursor:pointer}
+.task-list li.pending .task-icon{background:transparent;border-color:#c7c7cc}
+.task-list li.pending .task-icon:hover{border-color:#0066cc;background:#e6f1fb}
+.task-list li.done-item .task-icon{background:#34c759;border-color:#34c759;color:#fff}
+.task-list li .task-text{flex:1;cursor:pointer;padding:2px 0}
+.task-list li.pending .task-text{color:#1d1d1f}
+.task-list li.done-item .task-text{text-decoration:line-through;text-decoration-thickness:2.5px;color:#3b6d11}
+.task-list li .del-btn{width:22px;height:22px;border:none;background:transparent;color:#c7c7cc;cursor:pointer;border-radius:4px;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:0;transition:opacity .2s,color .2s}
+.task-list li:hover .del-btn{opacity:1}
+.task-list li .del-btn:hover{color:#a32d2d;background:#fcebeb}
+#devTaskList .pending{background:#fafafa}
+#devTaskList .pending:hover{background:#f0f0f2}
+.link-input-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.link-input-row input{padding:6px 10px;border:1px solid #d2d2d7;border-radius:6px;font-size:12px;outline:none}
+.link-input-row input:focus{border-color:#34c759}
+.link-input-row .link-name-input{flex:1;min-width:80px}
+.link-input-row .link-url-input{flex:2;min-width:120px}
+.link-input-row button{padding:6px 12px;background:#34c759;color:#fff;border:none;border-radius:6px;font-size:12px;cursor:pointer;white-space:nowrap;transition:background .2s}
+.link-input-row button:hover{background:#2db84d}
+.link-list{list-style:none;flex:1;overflow-y:auto}
+.link-list li{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;margin-bottom:3px;background:#fafafa;transition:all .15s;font-size:13px}
+.link-list li:hover{background:#f0f0f2}
+.link-list li .link-badge{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;background:#ebf9f0;color:#1d9e75;flex-shrink:0;font-weight:500}
+.link-list li .link-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;color:#1d1d1f;flex:0 0 45%}
+.link-list li .link-url-text{font-size:13px;font-weight:500;color:#0066cc;text-decoration:none;padding:3px 10px;border-radius:6px;transition:background .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:0 0 40%;text-align:left}
+.link-list li .link-url-text:hover{background:#e6f1fb;text-decoration:underline}
+.link-list li .link-del{width:22px;height:22px;border:none;background:transparent;color:#c7c7cc;cursor:pointer;border-radius:4px;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:0;transition:opacity .2s,color .2s}
+.link-list li:hover .link-del{opacity:1}
+.link-list li .link-del:hover{color:#a32d2d;background:#fcebeb}
+.link-empty{display:flex;align-items:center;justify-content:center;flex:1;color:#c7c7cc;font-size:13px;min-height:120px}
+
+/* 日常任务 - 层级列表 */
+.mm-toolbar{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;align-items:center}
+.mm-toolbar button{padding:5px 12px;border:1px solid #d2d2d7;border-radius:7px;font-size:12px;cursor:pointer;background:#fff;color:#1d1d1f;transition:all .15s}
+.mm-toolbar button:hover{background:#f5f5f7;border-color:#c7c7cc}
+.mm-toolbar .mm-p{background:#7c3aed;color:#fff;border-color:#7c3aed}
+.mm-toolbar .mm-p:hover{background:#6d28d9}
+.mm-list{list-style:none}
+.mm-list .mm-parent{display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:8px;margin-bottom:3px;font-size:13px;transition:all .15s;background:#f5f3ff}
+.mm-list .mm-parent:hover{background:#ede9fe}
+.mm-list .mm-parent .mm-arrow{width:16px;height:16px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#7c3aed;flex-shrink:0;cursor:pointer;transition:transform .2s;background:transparent;border:none;padding:0}
+.mm-list .mm-parent .mm-arrow.open{transform:rotate(90deg)}
+.mm-list .mm-parent .mm-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;border:1.5px solid #c7c7cc;cursor:pointer;transition:all .2s;background:transparent;color:transparent}
+.mm-list .mm-parent.done .mm-icon{background:#34c759;border-color:#34c759;color:#fff}
+.mm-list .mm-parent .mm-label{flex:1;cursor:pointer;padding:2px 0;color:#1d1d1f;min-width:0}
+.mm-list .mm-parent.done .mm-label{text-decoration:line-through;text-decoration-thickness:2.5px;color:#3b6d11}
+.mm-list .mm-parent .mm-add-child{width:20px;height:20px;border:none;background:transparent;color:#c7c7cc;cursor:pointer;border-radius:4px;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:0;transition:opacity .2s,color .2s}
+.mm-list .mm-parent:hover .mm-add-child{opacity:1}
+.mm-list .mm-parent .mm-add-child:hover{color:#7c3aed}
+.mm-list .mm-parent .mm-del{width:20px;height:20px;border:none;background:transparent;color:#c7c7cc;cursor:pointer;border-radius:4px;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:0;transition:opacity .2s,color .2s}
+.mm-list .mm-parent:hover .mm-del{opacity:1}
+.mm-list .mm-parent .mm-del:hover{color:#a32d2d;background:#fcebeb}
+.mm-list .mm-child{padding-left:38px}
+.mm-list .mm-child li{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;margin-bottom:2px;font-size:13px;transition:all .15s;background:#fafafa}
+.mm-list .mm-child li:hover{background:#f0f0f2}
+.mm-list .mm-child li .mm-icon{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;border:1.5px solid #c7c7cc;cursor:pointer;transition:all .2s;background:transparent;color:transparent}
+.mm-list .mm-child li.done .mm-icon{background:#34c759;border-color:#34c759;color:#fff}
+.mm-list .mm-child li .mm-label{flex:1;cursor:pointer;padding:2px 0;color:#1d1d1f}
+.mm-list .mm-child li.done .mm-label{text-decoration:line-through;text-decoration-thickness:2.5px;color:#3b6d11}
+.mm-list .mm-child li .mm-del{width:18px;height:18px;border:none;background:transparent;color:#c7c7cc;cursor:pointer;border-radius:4px;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:0;transition:opacity .2s,color .2s}
+.mm-list .mm-child li:hover .mm-del{opacity:1}
+.mm-list .mm-child li .mm-del:hover{color:#a32d2d;background:#fcebeb}
+.mm-child.collapsed{display:none}
+.mm-empty{display:flex;align-items:center;justify-content:center;color:#c7c7cc;font-size:13px;min-height:100px}
+
+.lock-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#f5f5f7;display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:16px}
+.lock-overlay.hidden{display:none}
+.lock-box{background:#fff;border-radius:16px;padding:32px 36px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.06);text-align:center;max-width:340px;width:100%}
+.lock-box h2{font-size:18px;font-weight:600;margin-bottom:4px;color:#1d1d1f}
+.lock-box p{font-size:13px;color:#86868b;margin-bottom:20px}
+.lock-box input{width:100%;padding:10px 14px;border:1px solid #d2d2d7;border-radius:10px;font-size:15px;outline:none;text-align:center;letter-spacing:4px;transition:border-color .2s;margin-bottom:12px}
+.lock-box input:focus{border-color:#0066cc}
+.lock-box .lock-error{font-size:12px;color:#a32d2d;min-height:18px;margin-bottom:8px}
+.lock-box button{width:100%;padding:10px;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s}
+.lock-box .lock-btn{background:#0066cc;color:#fff}
+.lock-box .lock-btn:hover{background:#0055b3}
+.lock-box .lock-hint{font-size:11px;color:#c7c7cc;margin-top:12px;cursor:pointer}
+.lock-box .lock-hint:hover{color:#0066cc}
+.lock-setup{background:#fff;border-radius:16px;padding:32px 36px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.06);text-align:center;max-width:340px;width:100%}
+.lock-setup h2{font-size:18px;font-weight:600;margin-bottom:4px;color:#1d1d1f}
+.lock-setup p{font-size:13px;color:#86868b;margin-bottom:20px}
+.lock-setup input{width:100%;padding:10px 14px;border:1px solid #d2d2d7;border-radius:10px;font-size:15px;outline:none;text-align:center;letter-spacing:4px;transition:border-color .2s;margin-bottom:12px}
+.lock-setup input:focus{border-color:#0066cc}
+.lock-setup .lock-error{font-size:12px;color:#a32d2d;min-height:18px;margin-bottom:8px}
+.lock-setup button{width:100%;padding:10px;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s}
+.lock-setup .lock-btn{background:#34c759;color:#fff}
+.lock-setup .lock-btn:hover{background:#2db84d}
+.quote-module{background:linear-gradient(135deg,#fafafa 0%,#f5f5f7 100%)}
+.quote-area{width:100%;min-height:80px;border:none;resize:vertical;font-size:13px;line-height:1.8;color:#1d1d1f;background:transparent;outline:none;padding:4px 0;font-family:inherit}
+.quote-area::placeholder{color:#c7c7cc}
+.quote-footer{font-size:11px;color:#86868b;margin-top:6px;display:flex;justify-content:space-between;align-items:center}
+.quote-footer button{padding:4px 10px;background:transparent;border:1px solid #d2d2d7;border-radius:6px;font-size:11px;cursor:pointer;color:#86868b;transition:background .2s,color .2s}
+.quote-footer button:hover{background:#0066cc;color:#fff;border-color:#0066cc}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#d2d2d7;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#c7c7cc}
+@media(max-width:900px){.income-grid{grid-template-columns:1fr}.task-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="lock-overlay" id="lockOverlay">
+  <div class="lock-setup" id="lockSetup">
+    <h2>设置密码</h2>
+    <p id="setupDesc">首次使用，请设置一个锁屏密码</p>
+    <input type="password" id="setupOldPwd" placeholder="旧密码" maxlength="20" style="display:none">
+    <input type="password" id="setupPwdInput" placeholder="新密码" maxlength="20" autofocus>
+    <input type="password" id="setupPwdConfirm" placeholder="再次输入新密码" maxlength="20">
+    <div class="lock-error" id="setupError"></div>
+    <button class="lock-btn" onclick="setupPassword()">确认</button>
+    <a class="lock-hint" id="setupBack" onclick="backToLock()" style="display:none;margin-top:10px">返回</a>
+  </div>
+  <div class="lock-box" id="lockBox" style="display:none">
+    <h2>🔒 工作主页</h2>
+    <p>输入密码解锁</p>
+    <input type="password" id="lockPwdInput" placeholder="密码" maxlength="20" autofocus>
+    <div class="lock-error" id="lockError"></div>
+    <button class="lock-btn" onclick="unlock()">解锁</button>
+    <a class="lock-hint" onclick="showSetup()">设置新密码</a>
+  </div>
+</div>
+<div class="container">
+  <div class="header">
+    <h1>工作主页</h1>
+    <p>电商 · 自媒体 · 日常</p>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title"><span class="icon" style="background:#0066cc">¥</span>收入记录</div>
+    <div class="income-grid">
+      <div class="income-item">
+        <div class="income-label" id="dateDisplay">2026年5月9日</div>
+        <div class="income-value" style="font-size:14px;font-weight:400;color:#86868b">📅 今天</div>
+      </div>
+      <div class="income-item">
+        <div class="income-label">总收入</div>
+        <div class="income-value"><span class="symbol">¥</span><span id="totalIncome">0.00</span></div>
+      </div>
+      <div class="income-item">
+        <div class="income-label">今日收入</div>
+        <div class="income-value"><span class="symbol">¥</span><input type="number" id="dailyIncome" class="income-input" placeholder="0" step="0.01"></div>
+      </div>
+    </div>
+    <div style="margin-top:12px;border-top:0.5px solid rgba(0,0,0,.06);padding-top:10px">
+      <div style="display:flex;align-items:center;gap:10px;font-size:12px">
+        <span style="color:#86868b">📋</span>
+        <a id="histToggle" style="color:#0066cc;cursor:pointer;text-decoration:none" onclick="toggleHist()">查看历史完成</a>
+        <span style="color:#c7c7cc;font-size:11px">（主线任务完成后自动归档）</span>
+      </div>
+      <div id="histPanel" style="display:none;margin-top:8px;max-height:200px;overflow-y:auto"></div>
+    </div>
+  </div>
+  <div class="task-row">
+    <div class="card" style="display:flex;flex-direction:column">
+      <div class="card-title"><span class="icon" style="background:#7c3aed">◉</span>日常任务</div>
+      <div class="mm-toolbar">
+        <button class="mm-p" onclick="mmAddParent()">+ 添加</button>
+        <span style="font-size:11px;color:#c7c7cc">▶ 展开/收起 · 点击圆圈完成</span>
+      </div>
+      <ul class="mm-list" id="mmList">
+        <li class="mm-empty">添加一些日常任务吧</li>
+      </ul>
+    </div>
+    <div class="task-col">
+      <div class="card" style="flex:1">
+        <div class="card-title"><span class="icon" style="background:#e68a00">★</span>主线任务</div>
+        <div class="task-input-row">
+          <input type="text" id="mainTaskInput" placeholder="输入新任务，回车添加...">
+          <button onclick="amt()">添加</button>
+        </div>
+        <ul class="task-list" id="mainTaskList"></ul>
+      </div>
+      <div class="card" style="flex:1;display:flex;flex-direction:column">
+        <div class="card-title"><span class="icon" style="background:#34c759"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg></span>可选任务</div>
+        <div class="link-input-row">
+          <input type="text" class="link-name-input" id="linkNameInput" placeholder="名称（如 淘宝后台）">
+          <input type="text" class="link-url-input" id="linkUrlInput" placeholder="网址链接">
+          <button onclick="al()">添加</button>
+        </div>
+        <ul class="link-list" id="linkList">
+          <li class="link-empty" id="linkEmpty">添加一些常用网址吧</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="card quote-module">
+    <div class="card-title"><span class="icon" style="background:#ff3b30">"</span>语录</div>
+    <textarea class="quote-area" id="quoteArea" placeholder="在这里记录今天触动你的一句话、灵感或感悟…&#10;每天随手写，偶尔回头看看。"></textarea>
+    <div class="quote-footer">
+      <span id="quoteCount">0 字</span>
+      <button onclick="clearQuote()" id="clearQuoteBtn">清空</button>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="card-title"><span class="icon" style="background:#c9208a">○</span>待开发</div>
+    <div class="task-input-row">
+      <input type="text" id="devTaskInput" placeholder="输入新任务，回车添加...">
+      <button onclick="adt()">添加</button>
+    </div>
+    <ul class="task-list" id="devTaskList"></ul>
+  </div>
+</div>
+<script>
+// ===== 密码锁 =====
+var PK='zhuye2_password',UK='zhuye2_unlocked';
+function cl(){var p=localStorage.getItem(PK);if(!p){document.getElementById('lockSetup').style.display='';document.getElementById('lockBox').style.display='none';document.getElementById('setupOldPwd').style.display='none';document.getElementById('setupBack').style.display='none';document.getElementById('setupDesc').textContent='首次使用，请设置一个锁屏密码';document.getElementById('setupPwdInput').focus();}else if(sessionStorage.getItem(UK)){document.getElementById('lockOverlay').classList.add('hidden');}else{document.getElementById('lockSetup').style.display='none';document.getElementById('lockBox').style.display='';document.getElementById('lockPwdInput').focus();}}
+function sp(){var e=document.getElementById('setupError'),s=localStorage.getItem(PK);if(s){var o=document.getElementById('setupOldPwd').value;if(o!==s){e.textContent='旧密码错误';return;}}var p=document.getElementById('setupPwdInput').value,c=document.getElementById('setupPwdConfirm').value;if(!p){e.textContent='请输入新密码';return;}if(p.length<3){e.textContent='密码至少3位';return;}if(p!==c){e.textContent='两次密码不一致';return;}e.textContent='';localStorage.setItem(PK,p);sessionStorage.setItem(UK,'1');document.getElementById('lockOverlay').classList.add('hidden');}
+function ul(){var p=document.getElementById('lockPwdInput').value,e=document.getElementById('lockError'),s=localStorage.getItem(PK);if(p===s){e.textContent='';sessionStorage.setItem(UK,'1');document.getElementById('lockOverlay').classList.add('hidden');}else{e.textContent='密码错误，请重试';document.getElementById('lockPwdInput').value='';document.getElementById('lockPwdInput').focus();}}
+function ss(){document.getElementById('lockBox').style.display='none';document.getElementById('lockSetup').style.display='';document.getElementById('setupOldPwd').style.display='';document.getElementById('setupBack').style.display='';document.getElementById('setupDesc').textContent='输入旧密码，然后设置新密码';document.getElementById('setupOldPwd').value='';document.getElementById('setupPwdInput').value='';document.getElementById('setupPwdConfirm').value='';document.getElementById('setupError').textContent='';document.getElementById('setupOldPwd').focus();}
+function bl(){document.getElementById('lockSetup').style.display='none';document.getElementById('lockBox').style.display='';document.getElementById('lockPwdInput').value='';document.getElementById('lockError').textContent='';document.getElementById('lockPwdInput').focus();}
+document.getElementById('lockPwdInput').addEventListener('keydown',function(e){if(e.key==='Enter')ul();});
+document.getElementById('setupPwdConfirm').addEventListener('keydown',function(e){if(e.key==='Enter')sp();});
+cl();
+function sd(k,d){localStorage.setItem('zhuye2_'+k,JSON.stringify(d));}
+function ld(k,d){try{var v=localStorage.getItem('zhuye2_'+k);return v?JSON.parse(v):d;}catch(e){return d;}}
+// ===== 收入 =====
+function ud(){var d=new Date(),w=['日','一','二','三','四','五','六'];document.getElementById('dateDisplay').textContent=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 周'+w[d.getDay()];}
+ud();
+function ct(){var i=ld('incomes',{}),t=0;for(var k in i)t+=parseFloat(i[k])||0;document.getElementById('totalIncome').textContent=t.toFixed(2);}
+function gtk(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function ldi(){var k=gtk(),i=ld('incomes',{});document.getElementById('dailyIncome').value=i[k]||'';ct();}
+var it;document.getElementById('dailyIncome').addEventListener('input',function(){clearTimeout(it);var s=this;it=setTimeout(function(){var v=parseFloat(s.value)||0,k=gtk(),i=ld('incomes',{});if(v>0)i[k]=v;else delete i[k];sd('incomes',i);ct();},300);});
+ldi();
+// ===== 主线任务（次日自动归档） =====
+// 归档昨日已完成
+(function(){var ld_=ld('mtDate',''),td_=gtk();if(ld_!==td_){var ts_=ld('mainTasks',[]),done_=[];for(var i_=ts_.length-1;i_>=0;i_--){if(ts_[i_].done){done_.push(ts_[i_]);ts_.splice(i_,1);}}if(done_.length&&ld_){var h_=ld('taskHistory',{});if(!h_[ld_])h_[ld_]=[];done_.forEach(function(t){h_[ld_].push({text:t.text,time:'归档'});});sd('taskHistory',h_);}sd('mainTasks',ts_);sd('mtDate',td_);}})();
+function rmt(){var l=document.getElementById('mainTaskList'),t=ld('mainTasks',[]);l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'✓':'';ic.onclick=function(){e.done=!e.done;sd('mainTasks',t);rmt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('mainTasks',t);rmt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='✕';btn.onclick=function(){t.splice(i,1);sd('mainTasks',t);rmt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
+function amt(){var i=document.getElementById('mainTaskInput'),t=i.value.trim();if(!t)return;var ts=ld('mainTasks',[]);ts.push({text:t,done:false});sd('mainTasks',ts);rmt();i.value='';i.focus();}
+document.getElementById('mainTaskInput').addEventListener('keydown',function(e){if(e.key==='Enter')amt();});rmt();
+// ===== 历史完成查看 =====
+var histOpen=false;
+function toggleHist(){
+  histOpen=!histOpen;
+  var p=document.getElementById('histPanel'),t=document.getElementById('histToggle');
+  if(!histOpen){p.style.display='none';t.textContent='查看历史完成';return;}
+  t.textContent='收起历史';
+  var h=ld('taskHistory',{}),dates=Object.keys(h).sort().reverse(),html='';
+  if(!dates.length){p.innerHTML='<div style="color:#c7c7cc;font-size:12px;padding:10px;text-align:center">暂无历史记录</div>';p.style.display='';return;}
+  dates.forEach(function(d){
+    html+='<div style="margin-bottom:8px"><div style="font-size:11px;color:#86868b;margin-bottom:4px;font-weight:500">📅 '+d+'</div>';
+    h[d].forEach(function(item){
+      html+='<div style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:#fafafa;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#34c759;font-size:10px">✓</span><span style="flex:1">'+item.text+'</span><span style="color:#c7c7cc;font-size:10px">'+item.time+'</span></div>';
+    });
+    html+='</div>';
+  });
+  p.innerHTML=html;p.style.display='';
+}
+// ===== 日常任务（每日重置） =====
+var mmLastDate=ld('mmDate','');var mmToday=gtk();
+if(mmLastDate!==mmToday){
+  var mmData=ld('mindmap',{children:[{label:'电商',done:false,children:[{label:'上新',done:false},{label:'客服',done:false},{label:'发货',done:false}]},{label:'自媒体',done:false,children:[{label:'写文案',done:false},{label:'拍摄',done:false},{label:'发布',done:false}]},{label:'个人',done:false,children:[{label:'学习',done:false},{label:'复盘',done:false}]}]});
+  if(mmData.children)mmData.children.forEach(function(c){c.done=false;if(c.children)c.children.forEach(function(s){s.done=false;});});
+  sd('mindmap',mmData);sd('mmDate',mmToday);
+}
+var mmData=ld('mindmap',{children:[{label:'电商',done:false,children:[{label:'上新',done:false},{label:'客服',done:false},{label:'发货',done:false}]},{label:'自媒体',done:false,children:[{label:'写文案',done:false},{label:'拍摄',done:false},{label:'发布',done:false}]},{label:'个人',done:false,children:[{label:'学习',done:false},{label:'复盘',done:false}]}]});
+// ===== 待开发 =====
+function rdt(){var l=document.getElementById('devTaskList'),t=ld('devTasks',[]);t.sort(function(a,b){if(a.done&&!b.done)return 1;if(!a.done&&b.done)return -1;return 0;});l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'✓':'';ic.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='✕';btn.onclick=function(){t.splice(i,1);sd('devTasks',t);rdt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
+function adt(){var i=document.getElementById('devTaskInput'),t=i.value.trim();if(!t)return;var ts=ld('devTasks',[]);ts.push({text:t,done:false});sd('devTasks',ts);rdt();i.value='';i.focus();}
+document.getElementById('devTaskInput').addEventListener('keydown',function(e){if(e.key==='Enter')adt();});rdt();
+// ===== 可选任务 =====
+function rl(){var l=document.getElementById('linkList'),ls=ld('links',[]);l.innerHTML='';if(!ls.length){var e=document.createElement('li');e.className='link-empty';e.textContent='添加一些常用网址吧';l.appendChild(e);return;}var cs=[{bg:'#ebf9f0',fg:'#1d9e75'},{bg:'#e6f1fb',fg:'#185fa5'},{bg:'#faeeda',fg:'#854f0b'},{bg:'#f5f3ff',fg:'#534ab7'},{bg:'#fbeaf0',fg:'#993556'},{bg:'#fcebeb',fg:'#a32d2d'}];ls.forEach(function(li,i){var el=document.createElement('li');var b=document.createElement('span');b.className='link-badge';b.style.background=cs[i%cs.length].bg;b.style.color=cs[i%cs.length].fg;b.textContent=li.name.charAt(0).toUpperCase();var n=document.createElement('span');n.className='link-name';n.textContent=li.name;var u=document.createElement('a');u.className='link-url-text';u.href=li.url;u.target='_blank';u.rel='noopener noreferrer';u.textContent='↗ '+li.url;var d=document.createElement('button');d.className='link-del';d.textContent='✕';d.onclick=function(e){e.stopPropagation();ls.splice(i,1);sd('links',ls);rl();};el.appendChild(b);el.appendChild(n);el.appendChild(u);el.appendChild(d);l.appendChild(el);});}
+function al(){var n=document.getElementById('linkNameInput').value.trim(),u=document.getElementById('linkUrlInput').value.trim();if(!n||!u)return;if(!u.startsWith('http://')&&!u.startsWith('https://'))u='https://'+u;var ls=ld('links',[]);ls.push({name:n,url:u});sd('links',ls);rl();document.getElementById('linkNameInput').value='';document.getElementById('linkUrlInput').value='';document.getElementById('linkNameInput').focus();}
+document.getElementById('linkUrlInput').addEventListener('keydown',function(e){if(e.key==='Enter')al();});
+document.getElementById('linkNameInput').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('linkUrlInput').focus();});rl();
+// ===== 日常任务（层级列表） =====
+var mmData=ld('mindmap',{children:[{label:'电商',done:false,children:[{label:'上新',done:false},{label:'客服',done:false},{label:'发货',done:false}]},{label:'自媒体',done:false,children:[{label:'写文案',done:false},{label:'拍摄',done:false},{label:'发布',done:false}]},{label:'个人',done:false,children:[{label:'学习',done:false},{label:'复盘',done:false}]}]});
+var mmOpen={};
+function mmSave(){sd('mindmap',mmData);}
+
+function mmMakeLabel(node, li, icon){
+  var wrap=document.createElement('span');wrap.style.cssText='flex:1;display:flex;align-items:center;min-width:0';
+  var txt=document.createElement('span');txt.className='mm-label';txt.textContent=node.label;
+  var inp=document.createElement('input');inp.type='text';inp.value=node.label;
+  inp.style.cssText='display:none;border:none;background:transparent;font-size:13px;color:inherit;outline:none;padding:2px 0;font-family:inherit;flex:1;min-width:30px';
+  var mmClickT;
+  txt.onclick=function(){
+    if(mmClickT){clearTimeout(mmClickT);mmClickT=null;return;}
+    mmClickT=setTimeout(function(){mmClickT=null;
+      var nd=!node.done;node.done=nd;
+      if(node.children)node.children.forEach(function(c){c.done=nd;});
+      mmSave();mmRender();
+    },220);
+  };
+  txt.ondblclick=function(e){if(mmClickT){clearTimeout(mmClickT);mmClickT=null;}e.stopPropagation();txt.style.display='none';inp.style.display='';inp.focus();inp.select();};
+  inp.onblur=function(){node.label=inp.value||'节点';mmSave();txt.textContent=node.label;txt.style.display='';inp.style.display='none';};
+  inp.onkeydown=function(e){if(e.key==='Enter')inp.blur();};
+  wrap.appendChild(txt);wrap.appendChild(inp);
+  return wrap;
+}
+
+function mmRender(){
+  var list=document.getElementById('mmList');list.innerHTML='';
+  if(!mmData.children||!mmData.children.length){var e=document.createElement('li');e.className='mm-empty';e.textContent='添加一些日常任务吧';list.appendChild(e);return;}
+  mmData.children.forEach(function(p,i){
+    var li=document.createElement('li');li.className='mm-parent'+(p.done?' done':'');
+    var arrow=document.createElement('button');arrow.className='mm-arrow'+(mmOpen[i]?' open':'');arrow.textContent='▶';
+    arrow.onclick=function(){mmOpen[i]=!mmOpen[i];mmRender();};
+    li.appendChild(arrow);
+    var icon=document.createElement('span');icon.className='mm-icon';icon.textContent=p.done?'✓':'';
+    icon.onclick=function(){var nd=!p.done;p.done=nd;if(p.children)p.children.forEach(function(c){c.done=nd;});mmSave();mmRender();};
+    li.appendChild(icon);
+    li.appendChild(mmMakeLabel(p, li, icon));
+    var addBtn=document.createElement('button');addBtn.className='mm-add-child';addBtn.textContent='+';
+    addBtn.title='添加子任务';
+    addBtn.onclick=function(){if(!p.children)p.children=[];p.children.push({label:'子任务',done:false});mmOpen[i]=true;mmSave();mmRender();};
+    li.appendChild(addBtn);
+    var delBtn=document.createElement('button');delBtn.className='mm-del';delBtn.textContent='✕';
+    delBtn.onclick=function(){mmData.children.splice(i,1);mmSave();mmRender();};
+    li.appendChild(delBtn);
+    list.appendChild(li);
+    if(p.children&&p.children.length&&mmOpen[i]){
+      var childUl=document.createElement('ul');childUl.className='mm-child';
+      p.children.forEach(function(c,j){
+        var cli=document.createElement('li');cli.className=c.done?'done':'';
+        var ci=document.createElement('span');ci.className='mm-icon';ci.textContent=c.done?'✓':'';
+        ci.onclick=function(){c.done=!c.done;var ad=true;for(var k=0;k<p.children.length;k++){if(!p.children[k].done){ad=false;break;}}p.done=ad;mmSave();mmRender();};
+        cli.appendChild(ci);
+        var cwrap=document.createElement('span');cwrap.style.cssText='flex:1;display:flex;align-items:center;min-width:0';
+        var ctxt=document.createElement('span');ctxt.className='mm-label';ctxt.textContent=c.label;
+        var cinp=document.createElement('input');cinp.type='text';cinp.value=c.label;
+        cinp.style.cssText='display:none;border:none;background:transparent;font-size:13px;color:inherit;outline:none;padding:2px 0;font-family:inherit;flex:1;min-width:30px';
+        var ctClickT;
+        ctxt.onclick=function(){if(ctClickT){clearTimeout(ctClickT);ctClickT=null;return;}ctClickT=setTimeout(function(){ctClickT=null;c.done=!c.done;var ad=true;for(var k=0;k<p.children.length;k++){if(!p.children[k].done){ad=false;break;}}p.done=ad;mmSave();mmRender();},220);};
+        ctxt.ondblclick=function(e){if(ctClickT){clearTimeout(ctClickT);ctClickT=null;}e.stopPropagation();ctxt.style.display='none';cinp.style.display='';cinp.focus();cinp.select();};
+        cinp.onblur=function(){c.label=cinp.value||'节点';mmSave();ctxt.textContent=c.label;ctxt.style.display='';cinp.style.display='none';};
+        cinp.onkeydown=function(e){if(e.key==='Enter')cinp.blur();};
+        cwrap.appendChild(ctxt);cwrap.appendChild(cinp);
+        cli.appendChild(cwrap);
+        var cd=document.createElement('button');cd.className='mm-del';cd.textContent='✕';
+        cd.onclick=function(){p.children.splice(j,1);mmSave();mmRender();};
+        cli.appendChild(cd);
+        childUl.appendChild(cli);
+      });
+      list.appendChild(childUl);
+    }
+  });
+}
+function mmAddParent(){if(!mmData.children)mmData.children=[];mmData.children.push({label:'分类',done:false,children:[]});mmSave();mmRender();}
+mmRender();
+// ===== 语录 =====
+function lq(){document.getElementById('quoteArea').value=ld('quote','');uq();}
+function sq(){sd('quote',document.getElementById('quoteArea').value);uq();}
+function uq(){var t=document.getElementById('quoteArea').value,l=t.length,w=t.trim()?t.trim().split(/[\s\n]+/).length:0;document.getElementById('quoteCount').textContent=l+' 字'+(w?' · '+w+' 词':'');}
+function cq(){if(document.getElementById('quoteArea').value.trim()&&!confirm('确定清空语录吗？'))return;document.getElementById('quoteArea').value='';sq();}
+var qt;document.getElementById('quoteArea').addEventListener('input',function(){clearTimeout(qt);qt=setTimeout(sq,400);});lq();
+</script>
+</body>
+</html>
