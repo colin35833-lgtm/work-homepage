@@ -309,7 +309,7 @@ function toggleHist(){
   dates.forEach(function(d){
     html+='<div style="margin-bottom:6px"><div style="font-size:11px;color:#86868b;margin-bottom:3px;font-weight:500">📅 '+d+'</div>';
     if(mh[d]){mh[d].forEach(function(i){html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#e6f1fb;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#185fa5;font-size:10px">★</span><span style="flex:1">'+i.text+'</span><span style="color:#c7c7cc;font-size:10px">主线</span></div>';});}
-    if(dh[d]){dh[d].forEach(function(i){html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#f5f3ff;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#534ab7;font-size:10px">◉</span><span style="flex:1">'+i.text+'</span><span style="color:#c7c7cc;font-size:10px">可选</span></div>';});}
+    if(dh[d]){dh[d].forEach(function(i){html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#e6f1fb;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#34c759;font-size:12px">◆</span><span style="flex:1">'+i.text+'</span><span style="color:#c7c7cc;font-size:10px">可选</span></div>';});}
     html+='</div>';
   });
   p.innerHTML=html;p.style.display='';
