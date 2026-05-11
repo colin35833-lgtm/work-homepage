@@ -307,7 +307,7 @@ function ld(k,d){try{var v=localStorage.getItem('zhuye2_'+k);return v?JSON.parse
     }
     sessionStorage.setItem('zhuye2_synced','1');
     // 锁屏状态下不刷新（会清空用户输入的密码），解锁后会自然触发
-    if(!localStorage.getItem(PK) || sessionStorage.getItem(UK)){
+    if((!localStorage.getItem(PK)||sessionStorage.getItem(UK))&&!sessionStorage.getItem('zhuye2_just_unlocked')){
       location.reload();
     }
   }).catch(function(){sessionStorage.setItem('zhuye2_synced','1');});
