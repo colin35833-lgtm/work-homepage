@@ -270,6 +270,7 @@ function ld(k,d){try{var v=localStorage.getItem('zhuye2_'+k);return v?JSON.parse
       // 数据同步完成后再执行每日重置和归档
       runDailyReset();
       runMainTaskArchive();
+      runDevTaskArchive();
     }
     sessionStorage.setItem('zhuye2_synced','1');
     // 锁屏状态下不刷新（会清空用户输入的密码），解锁后会自然触发
@@ -290,6 +291,9 @@ ldi();
 // 归档昨日已完成
 function runMainTaskArchive(){var ld_=ld('mtDate',''),td_=gtk();if(ld_!==td_){var ts_=ld('mainTasks',[]),done_=[];for(var i_=ts_.length-1;i_>=0;i_--){if(ts_[i_].done){done_.push(ts_[i_]);ts_.splice(i_,1);}}if(done_.length&&ld_){var h_=ld('taskHistory',{});if(!h_[ld_])h_[ld_]=[];done_.forEach(function(t){h_[ld_].push({text:t.text,time:'归档'});});sd('taskHistory',h_);}sd('mainTasks',ts_);sd('mtDate',td_);}}
 if(localStorage.getItem('zhuye2_mainTasks')){runMainTaskArchive();}
+// ===== 可选任务（次日自动归档） =====
+function runDevTaskArchive(){var dd_=ld('devDate',''),td_=gtk();if(dd_!==td_){var ds_=ld('devTasks',[]),done_=[];for(var di_=ds_.length-1;di_>=0;di_--){if(ds_[di_].done){done_.push(ds_[di_]);ds_.splice(di_,1);}}if(done_.length&&dd_){var dh_=ld('devTaskHistory',{});if(!dh_[dd_])dh_[dd_]=[];done_.forEach(function(t){dh_[dd_].push({text:t.text,time:'归档'});});sd('devTaskHistory',dh_);}sd('devTasks',ds_);sd('devDate',td_);}}
+if(localStorage.getItem('zhuye2_devTasks')){runDevTaskArchive();}
 function rmt(){var l=document.getElementById('mainTaskList'),t=ld('mainTasks',[]);l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'✓':'';ic.onclick=function(){e.done=!e.done;sd('mainTasks',t);rmt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('mainTasks',t);rmt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='✕';btn.onclick=function(){t.splice(i,1);sd('mainTasks',t);rmt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
 function amt(){var i=document.getElementById('mainTaskInput'),t=i.value.trim();if(!t)return;var ts=ld('mainTasks',[]);ts.push({text:t,done:false});sd('mainTasks',ts);rmt();i.value='';i.focus();}
 document.getElementById('mainTaskInput').addEventListener('keydown',function(e){if(e.key==='Enter')amt();});rmt();
