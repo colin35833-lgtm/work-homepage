@@ -136,7 +136,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
 </head>
 <body>
 <div class="lock-overlay" id="lockOverlay">
-  <div class="lock-setup" id="lockSetup">
+  <div class="lock-setup" id="lockSetup" style="display:none">
     <h2>设置密码</h2>
     <p id="setupDesc">首次使用，请设置一个锁屏密码</p>
     <input type="password" id="setupOldPwd" placeholder="旧密码" maxlength="20" style="display:none">
@@ -146,7 +146,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
     <button class="lock-btn" onclick="setupPassword()">确认</button>
     <a class="lock-hint" id="setupBack" onclick="backToLock()" style="display:none;margin-top:10px">返回</a>
   </div>
-  <div class="lock-box" id="lockBox" style="display:none">
+  <div class="lock-box" id="lockBox">
     <h2>🔒 工作主页</h2>
     <p>输入密码解锁</p>
     <input type="password" id="lockPwdInput" placeholder="密码" maxlength="20" autofocus>
