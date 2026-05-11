@@ -304,13 +304,12 @@ function toggleHist(){
   var p=document.getElementById('histPanel'),t=document.getElementById('histToggle');
   if(!histOpen){p.style.display='none';t.textContent='查看历史完成';return;}
   t.textContent='收起历史';
-  var h=ld('taskHistory',{}),dates=Object.keys(h).sort().reverse(),html='';
+  var mh=ld('taskHistory',{}),dh=ld('devTaskHistory',{}),dates=Object.keys(mh).concat(Object.keys(dh)).filter(function(v,i,a){return a.indexOf(v)===i;}).sort().reverse(),html='';
   if(!dates.length){p.innerHTML='<div style="color:#c7c7cc;font-size:12px;padding:10px;text-align:center">暂无历史记录</div>';p.style.display='';return;}
   dates.forEach(function(d){
-    html+='<div style="margin-bottom:8px"><div style="font-size:11px;color:#86868b;margin-bottom:4px;font-weight:500">📅 '+d+'</div>';
-    h[d].forEach(function(item){
-      html+='<div style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:#fafafa;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#34c759;font-size:10px">✓</span><span style="flex:1">'+item.text+'</span><span style="color:#c7c7cc;font-size:10px">'+item.time+'</span></div>';
-    });
+    html+='<div style="margin-bottom:6px"><div style="font-size:11px;color:#86868b;margin-bottom:3px;font-weight:500">📅 '+d+'</div>';
+    if(mh[d]){mh[d].forEach(function(i){html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#e6f1fb;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#185fa5;font-size:10px">★</span><span style="flex:1">'+i.text+'</span><span style="color:#c7c7cc;font-size:10px">主线</span></div>';});}
+    if(dh[d]){dh[d].forEach(function(i){html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#f5f3ff;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#534ab7;font-size:10px">◉</span><span style="flex:1">'+i.text+'</span><span style="color:#c7c7cc;font-size:10px">可选</span></div>';});}
     html+='</div>';
   });
   p.innerHTML=html;p.style.display='';
