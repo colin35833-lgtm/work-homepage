@@ -300,7 +300,7 @@ function ld(k,d){try{var v=localStorage.getItem('zhuye2_'+k);return v?JSON.parse
   }).catch(function(){sessionStorage.setItem('zhuye2_synced','1');});
 })();
 // ===== 收入 =====
-function ud(){var d=new Date(),w=['日','一','二','三','四','五','六'];document.getElementById('dateDisplay').textContent=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 周'+w[d.getDay()];}
+function ud(){var d=new Date();document.getElementById('dateDisplay').textContent=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';}
 ud();
 function ct(){var i=ld('incomes',{}),t=0;for(var k in i)t+=parseFloat(i[k])||0;document.getElementById('totalIncome').textContent=t.toFixed(2);}
 function gtk(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -308,8 +308,8 @@ function ldi(){var k=gtk(),i=ld('incomes',{});document.getElementById('dailyInco
 var it;document.getElementById('dailyIncome').addEventListener('input',function(){clearTimeout(it);var s=this;it=setTimeout(function(){var v=parseFloat(s.value)||0,k=gtk(),i=ld('incomes',{});if(v>0)i[k]=v;else delete i[k];sd('incomes',i);ct();},300);});
 ldi();
 // ===== 净利润 =====
-function pud(){var d=new Date();document.getElementById('pDateDisplay').textContent=d.getFullYear()+'\u5e74'+(d.getMonth()+1)+'\u6708'+d.getDate()+'\u65e5';}
-pud();
+
+
 function pct(){var i=ld('profits',{}),t=0;for(var k in i)t+=parseFloat(i[k])||0;document.getElementById('totalProfit').textContent=t.toFixed(2);}
 function pldi(){var k=gtk(),i=ld('profits',{});document.getElementById('dailyProfit').value=i[k]||'';pct();}
 var pit;document.getElementById('dailyProfit').addEventListener('input',function(){clearTimeout(pit);var s=this;pit=setTimeout(function(){var v=parseFloat(s.value)||0,k=gtk(),i=ld('profits',{});if(v>0)i[k]=v;else delete i[k];sd('profits',i);pct();},300);});
