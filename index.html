@@ -161,18 +161,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
     <p>电商 · 自媒体 · 日常</p>
   </div>
   <div class="card" style="margin-bottom:16px">
-    <div class="card-title"><span class="icon" style="background:#0066cc">¥</span>收入记录</div>
+    <div class="card-title"><span class="icon" style="background:#0066cc">¥</span>营收</div>
     <div class="income-grid">
       <div class="income-item">
         <div class="income-label" id="dateDisplay">2026年5月9日</div>
         <div class="income-value" style="font-size:14px;font-weight:400;color:#86868b">📅 今天</div>
       </div>
       <div class="income-item">
-        <div class="income-label">总收入</div>
+        <div class="income-label">总营收</div>
         <div class="income-value"><span class="symbol">¥</span><span id="totalIncome">0.00</span></div>
       </div>
       <div class="income-item">
-        <div class="income-label">今日收入</div>
+        <div class="income-label">今日营收</div>
         <div class="income-value"><span class="symbol">¥</span><input type="number" id="dailyIncome" class="income-input" placeholder="0" step="0.01"></div>
       </div>
     </div>
@@ -186,11 +186,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
     </div>
     <div style="display:flex;align-items:center;gap:10px;font-size:12px;margin-top:6px">
       <span style="color:#86868b">💰</span>
-      <a id="incHistToggle" style="color:#0066cc;cursor:pointer;text-decoration:none" onclick="toggleIncHist()">查看收入明细</a>
+      <a id="incHistToggle" style="color:#0066cc;cursor:pointer;text-decoration:none" onclick="toggleIncHist()">查看收支明细</a>
     </div>
     <div id="incHistPanel" style="display:none;margin-top:8px;max-height:200px;overflow-y:auto"></div>
   </div>
-  <div class="task-row">
+    <div class="card" style="margin-bottom:16px">
+    <div class="card-title"><span class="icon" style="background:#34c759">◆</span>净利润</div>
+    <div class="income-grid">
+      <div class="income-item">
+        <div class="income-label" id="pDateDisplay">2026年5月9日</div>
+        <div class="income-value" style="font-size:14px;font-weight:400;color:#86868b">📅 今天</div>
+      </div>
+      <div class="income-item">
+        <div class="income-label">总利润</div>
+        <div class="income-value"><span class="symbol">¥</span><span id="totalProfit">0.00</span></div>
+      </div>
+      <div class="income-item">
+        <div class="income-label">日净利润</div>
+        <div class="income-value"><span class="symbol">¥</span><input type="number" id="dailyProfit" class="income-input" placeholder="0" step="0.01"></div>
+      </div>
+    </div>
+  </div><div class="task-row">
     <div class="card" style="display:flex;flex-direction:column">
       <div class="card-title"><span class="icon" style="background:#7c3aed">◉</span>日常任务</div>
       <div class="mm-toolbar">
@@ -291,19 +307,32 @@ function gtk(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1
 function ldi(){var k=gtk(),i=ld('incomes',{});document.getElementById('dailyIncome').value=i[k]||'';ct();}
 var it;document.getElementById('dailyIncome').addEventListener('input',function(){clearTimeout(it);var s=this;it=setTimeout(function(){var v=parseFloat(s.value)||0,k=gtk(),i=ld('incomes',{});if(v>0)i[k]=v;else delete i[k];sd('incomes',i);ct();},300);});
 ldi();
+// ===== 净利润 =====
+function pud(){var d=new Date();document.getElementById('pDateDisplay').textContent=d.getFullYear()+'\u5e74'+(d.getMonth()+1)+'\u6708'+d.getDate()+'\u65e5';}
+pud();
+function pct(){var i=ld('profits',{}),t=0;for(var k in i)t+=parseFloat(i[k])||0;document.getElementById('totalProfit').textContent=t.toFixed(2);}
+function pldi(){var k=gtk(),i=ld('profits',{});document.getElementById('dailyProfit').value=i[k]||'';pct();}
+var pit;document.getElementById('dailyProfit').addEventListener('input',function(){clearTimeout(pit);var s=this;pit=setTimeout(function(){var v=parseFloat(s.value)||0,k=gtk(),i=ld('profits',{});if(v>0)i[k]=v;else delete i[k];sd('profits',i);pct();},300);});
+pldi();
 var incHistOpen=false;
 function toggleIncHist(){
   incHistOpen=!incHistOpen;
   var p=document.getElementById('incHistPanel'),t=document.getElementById('incHistToggle');
-  if(!incHistOpen){p.style.display='none';t.textContent='查看收入明细';return;}
+  if(!incHistOpen){p.style.display='none';t.textContent='查看收支明细';return;}
   t.textContent='收起明细';
-  var inc=ld('incomes',{}),dates=Object.keys(inc).sort().reverse(),html='',total=0;
-  if(!dates.length){p.innerHTML='<div style="color:#c7c7cc;font-size:12px;padding:10px;text-align:center">暂无收入记录</div>';p.style.display='';return;}
-  dates.forEach(function(d){
-    var v=parseFloat(inc[d])||0;total+=v;
-    html+='<div style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:#fafafa;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#0066cc;font-size:10px">¥</span><span style="flex:1">'+d+'</span><span style="font-weight:600">'+v.toFixed(2)+'</span></div>';
+  var inc=ld('incomes',{}),prf=ld('profits',{}),allDates=Object.keys(inc).concat(Object.keys(prf)).filter(function(v,i,a){return a.indexOf(v)===i;}).sort().reverse(),html='';
+  if(!allDates.length){p.innerHTML='<div style="color:#c7c7cc;font-size:12px;padding:10px;text-align:center">暂无记录</div>';p.style.display='';return;}
+  var incTotal=0,prfTotal=0;
+  allDates.forEach(function(d){
+    var iv=parseFloat(inc[d])||0,pv=parseFloat(prf[d])||0;incTotal+=iv;prfTotal+=pv;
+    html+='<div style="margin-bottom:4px"><div style="font-size:11px;color:#86868b;margin-bottom:2px;font-weight:500">'+d+'</div>';
+    if(iv>0||pv>0){
+      if(iv>0)html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#e6f1fb;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#0066cc;font-size:10px">¥</span><span style="flex:1">营收</span><span>'+iv.toFixed(2)+'</span></div>';
+      if(pv>0)html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#eaf3de;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#639922;font-size:10px">◆</span><span style="flex:1">净利</span><span>'+pv.toFixed(2)+'</span></div>';
+    }
+    html+='</div>';
   });
-  html+='<div style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:#e6f1fb;border-radius:6px;margin-top:6px;font-size:12px;font-weight:600"><span style="flex:1">合计</span>¥'+total.toFixed(2)+'</div>';
+  html+='<div style="border-top:0.5px solid rgba(0,0,0,.06);margin-top:4px;padding-top:6px"><div style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:#e6f1fb;border-radius:6px;margin-bottom:2px;font-size:12px;font-weight:600"><span style="color:#0066cc;font-size:10px">¥</span><span style="flex:1">营收合计</span><span>'+incTotal.toFixed(2)+'</span></div><div style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:#eaf3de;border-radius:6px;font-size:12px;font-weight:600"><span style="color:#639922;font-size:10px">◆</span><span style="flex:1">净利合计</span><span>'+prfTotal.toFixed(2)+'</span></div></div>';
   p.innerHTML=html;p.style.display='';
 }
 // ===== 主线任务（次日自动归档） =====
