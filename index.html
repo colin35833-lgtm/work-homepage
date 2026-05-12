@@ -248,60 +248,66 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
   </div>
 </div>
 <script>
-// ===== 密码锁 =====
+// ===================== 数据层 =====================
+function sd(k,d){
+  localStorage.setItem('zhuye2_'+k,JSON.stringify(d));
+  var b=JSON.stringify({id:k,data:d});
+  (function push(){fetch('https://lmfvfaobkmraiajodede.supabase.co/rest/v1/app_data',{method:'POST',headers:{'apikey':'sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Authorization':'Bearer sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:b}).catch(function(){setTimeout(push,3000);});})();
+}
+function ld(k,d){try{var v=localStorage.getItem('zhuye2_'+k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function gtk(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+
+// 首次打开从云端拉取（只补充本地没有的）
+(function(){if(sessionStorage.getItem('zhuye2_synced'))return;
+  fetch('https://lmfvfaobkmraiajodede.supabase.co/rest/v1/app_data',{headers:{'apikey':'sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Authorization':'Bearer sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq'}})
+  .then(function(r){return r.json();}).then(function(rows){
+    var hasData=false;
+    if(rows&&rows.length){rows.forEach(function(row){if(row.id&&row.data){var lk='zhuye2_'+row.id;if(!localStorage.getItem(lk)){localStorage.setItem(lk,JSON.stringify(row.data));hasData=true;}}});}
+    if(hasData){runDailyReset();runMainTaskArchive();runDevTaskArchive();}
+    sessionStorage.setItem('zhuye2_synced','1');
+    if((!localStorage.getItem(PK)||sessionStorage.getItem(UK))){location.reload();}
+  }).catch(function(){sessionStorage.setItem('zhuye2_synced','1');});
+})();
+
+// ===================== 密码锁 =====================
 var PK='zhuye2_password',UK='zhuye2_unlocked';
-function cl(){var p=localStorage.getItem(PK);if(!p){document.getElementById('lockSetup').style.display='';document.getElementById('lockBox').style.display='none';document.getElementById('setupOldPwd').style.display='none';document.getElementById('setupBack').style.display='none';document.getElementById('setupDesc').textContent='首次使用，请设置一个锁屏密码';document.getElementById('setupPwdInput').focus();}else if(sessionStorage.getItem(UK)){document.getElementById('lockOverlay').classList.add('hidden');}else{document.getElementById('lockSetup').style.display='none';document.getElementById('lockBox').style.display='';document.getElementById('lockPwdInput').focus();}}function sp(){var e=document.getElementById('setupError'),s=localStorage.getItem(PK);if(s){var o=document.getElementById('setupOldPwd').value;if(o!==s){e.textContent='旧密码错误';return;}}var p=document.getElementById('setupPwdInput').value,c=document.getElementById('setupPwdConfirm').value;if(!p){e.textContent='请输入新密码';return;}if(p.length<3){e.textContent='密码至少3位';return;}if(p!==c){e.textContent='两次密码不一致';return;}e.textContent='';localStorage.setItem(PK,p);sessionStorage.setItem(UK,'1');document.getElementById('lockOverlay').classList.add('hidden');}
-function ul(){var p=document.getElementById('lockPwdInput').value,e=document.getElementById('lockError'),s=localStorage.getItem(PK);if(p===s){e.textContent='';sessionStorage.setItem(UK,'1');document.getElementById('lockOverlay').classList.add('hidden');}else{e.textContent='密码错误，请重试';document.getElementById('lockPwdInput').value='';document.getElementById('lockPwdInput').focus();}}
-function ss(){document.getElementById('lockBox').style.display='none';document.getElementById('lockSetup').style.display='';document.getElementById('setupOldPwd').style.display='';document.getElementById('setupBack').style.display='';document.getElementById('setupDesc').textContent='输入旧密码，然后设置新密码';document.getElementById('setupOldPwd').value='';document.getElementById('setupPwdInput').value='';document.getElementById('setupPwdConfirm').value='';document.getElementById('setupError').textContent='';document.getElementById('setupOldPwd').focus();}
+function cl(){
+  var p=localStorage.getItem(PK);
+  if(!p){document.getElementById('lockSetup').style.display='';document.getElementById('lockBox').style.display='none';document.getElementById('setupOldPwd').style.display='none';document.getElementById('setupBack').style.display='none';document.getElementById('setupDesc').textContent='首次使用，请设置一个锁屏密码';document.getElementById('setupPwdInput').focus();}
+  else if(sessionStorage.getItem(UK)){document.getElementById('lockOverlay').classList.add('hidden');}
+  else{document.getElementById('lockSetup').style.display='none';document.getElementById('lockBox').style.display='';document.getElementById('lockPwdInput').focus();}
+}
+function sp(){
+  var e=document.getElementById('setupError'),s=localStorage.getItem(PK);
+  if(s){var o=document.getElementById('setupOldPwd').value;if(o!==s){e.textContent='旧密码错误';return;}}
+  var p=document.getElementById('setupPwdInput').value,c=document.getElementById('setupPwdConfirm').value;
+  if(!p){e.textContent='请输入新密码';return;}if(p.length<3){e.textContent='密码至少3位';return;}if(p!==c){e.textContent='两次密码不一致';return;}
+  e.textContent='';localStorage.setItem(PK,p);sessionStorage.setItem(UK,'1');document.getElementById('lockOverlay').classList.add('hidden');
+}
+function ul(){
+  var p=document.getElementById('lockPwdInput').value,e=document.getElementById('lockError'),s=localStorage.getItem(PK);
+  if(p===s){e.textContent='';sessionStorage.setItem(UK,'1');document.getElementById('lockOverlay').classList.add('hidden');}
+  else{e.textContent='密码错误，请重试';document.getElementById('lockPwdInput').value='';document.getElementById('lockPwdInput').focus();}
+}
+function ss(){document.getElementById('lockBox').style.display='none';document.getElementById('lockSetup').style.display='';document.getElementById('setupOldPwd').style.display='';document.getElementById('setupBack').style.display='';document.getElementById('setupDesc').textContent='输入旧密码，然后设置新密码';document.getElementById('setupOldPwd').focus();}
 function bl(){document.getElementById('lockSetup').style.display='none';document.getElementById('lockBox').style.display='';document.getElementById('lockPwdInput').value='';document.getElementById('lockError').textContent='';document.getElementById('lockPwdInput').focus();}
 document.getElementById('lockPwdInput').addEventListener('keydown',function(e){if(e.key==='Enter')ul();});
 document.getElementById('setupPwdConfirm').addEventListener('keydown',function(e){if(e.key==='Enter')sp();});
 cl();
-function sd(k,d){
-  localStorage.setItem('zhuye2_'+k,JSON.stringify(d));
-  var b=JSON.stringify({id:k,data:d});
-  function sp(){fetch('https://lmfvfaobkmraiajodede.supabase.co/rest/v1/app_data',{method:'POST',headers:{'apikey':'sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Authorization':'Bearer sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:b}).catch(function(){setTimeout(sp,3000);});}
-  sp();
-}function ld(k,d){try{var v=localStorage.getItem('zhuye2_'+k);return v?JSON.parse(v):d;}catch(e){return d;}}
-// 云端数据同步（首次打开拉一次，后续修改靠sd实时推）
-(function(){
-  if(sessionStorage.getItem('zhuye2_synced'))return;
-  fetch('https://lmfvfaobkmraiajodede.supabase.co/rest/v1/app_data',{
-    headers:{'apikey':'sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Authorization':'Bearer sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq'}
-  }).then(function(r){return r.json();}).then(function(rows){
-    var hasData=false;
-    if(rows&&rows.length){
-      rows.forEach(function(row){if(row.id&&row.data){var lk='zhuye2_'+row.id;if(!localStorage.getItem(lk)){localStorage.setItem(lk,JSON.stringify(row.data));hasData=true;}}});
-    }
-    if(hasData){
-      // 数据同步完成后再执行每日重置和归档
-      runDailyReset();
-      runMainTaskArchive();
-      runDevTaskArchive();
-    }
-    sessionStorage.setItem('zhuye2_synced','1');
-    
-    // 锁屏状态下不刷新（会清空用户输入的密码），解锁后会自然触发
-    if((!localStorage.getItem(PK)||sessionStorage.getItem(UK))){
-      location.reload();
-    }
-  }).catch(function(){sessionStorage.setItem('zhuye2_synced','1');});
-})();
-// ===== 收入 =====
+
+// ===================== 营收 · 利润 =====================
 function ud(){var d=new Date();document.getElementById('dateDisplay').textContent=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';}
 ud();
 function ct(){var i=ld('incomes',{}),t=0;for(var k in i)t+=parseFloat(i[k])||0;document.getElementById('totalIncome').textContent=t.toFixed(2);}
-function gtk(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function ldi(){var k=gtk(),i=ld('incomes',{});document.getElementById('dailyIncome').value=i[k]||'';ct();}
 var it;document.getElementById('dailyIncome').addEventListener('input',function(){clearTimeout(it);var s=this;it=setTimeout(function(){var v=parseFloat(s.value)||0,k=gtk(),i=ld('incomes',{});if(v>0)i[k]=v;else delete i[k];sd('incomes',i);ct();},300);});
 ldi();
-// ===== 净利润 =====
-
-
 function pct(){var i=ld('profits',{}),t=0;for(var k in i)t+=parseFloat(i[k])||0;document.getElementById('totalProfit').textContent=t.toFixed(2);}
 function pldi(){var k=gtk(),i=ld('profits',{});document.getElementById('dailyProfit').value=i[k]||'';pct();}
 var pit;document.getElementById('dailyProfit').addEventListener('input',function(){clearTimeout(pit);var s=this;pit=setTimeout(function(){var v=parseFloat(s.value)||0,k=gtk(),i=ld('profits',{});if(v>0)i[k]=v;else delete i[k];sd('profits',i);pct();},300);});
 pldi();
+
+// ===================== 收支明细 =====================
 var incHistOpen=false;
 function toggleIncHist(){
   incHistOpen=!incHistOpen;
@@ -318,17 +324,22 @@ function toggleIncHist(){
   html+='<div style="display:flex;align-items:center;gap:8px;padding:4px 8px;background:#e6f1fb;border-radius:6px;margin-top:4px;font-size:12px;font-weight:600"><span style="min-width:76px;color:#86868b">合计</span><span style="flex:1;text-align:right">¥ '+incTotal.toFixed(2)+'</span><span style="flex:1;text-align:right">◆ '+prfTotal.toFixed(2)+'</span></div>';
   p.innerHTML=html;p.style.display='';
 }
-// ===== 主线任务（次日自动归档） =====
-// 归档昨日已完成
+
+// ===================== 主线任务（次日自动归档） =====================
 function runMainTaskArchive(){var ld_=ld('mtDate',''),td_=gtk();if(ld_!==td_){var ts_=ld('mainTasks',[]),done_=[];for(var i_=ts_.length-1;i_>=0;i_--){if(ts_[i_].done){done_.push(ts_[i_]);ts_.splice(i_,1);}}if(done_.length&&ld_){var h_=ld('taskHistory',{});if(!h_[ld_])h_[ld_]=[];done_.forEach(function(t){h_[ld_].push({text:t.text,time:'归档'});});sd('taskHistory',h_);}sd('mainTasks',ts_);sd('mtDate',td_);}}
 if(localStorage.getItem('zhuye2_mainTasks')){runMainTaskArchive();}
-// ===== 可选任务（次日自动归档） =====
-function runDevTaskArchive(){var dd_=ld('devDate',''),td_=gtk();if(dd_!==td_){var ds_=ld('devTasks',[]),done_=[];for(var di_=ds_.length-1;di_>=0;di_--){if(ds_[di_].done){done_.push(ds_[di_]);ds_.splice(di_,1);}}if(done_.length&&dd_){var dh_=ld('devTaskHistory',{});if(!dh_[dd_])dh_[dd_]=[];done_.forEach(function(t){dh_[dd_].push({text:t.text,time:'归档'});});sd('devTaskHistory',dh_);}sd('devTasks',ds_);sd('devDate',td_);}}
-if(localStorage.getItem('zhuye2_devTasks')){runDevTaskArchive();}
 function rmt(){var l=document.getElementById('mainTaskList'),t=ld('mainTasks',[]);l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'✓':'';ic.onclick=function(){e.done=!e.done;sd('mainTasks',t);rmt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('mainTasks',t);rmt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='✕';btn.onclick=function(){t.splice(i,1);sd('mainTasks',t);rmt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
 function amt(){var i=document.getElementById('mainTaskInput'),t=i.value.trim();if(!t)return;var ts=ld('mainTasks',[]);ts.push({text:t,done:false});sd('mainTasks',ts);rmt();i.value='';i.focus();}
 document.getElementById('mainTaskInput').addEventListener('keydown',function(e){if(e.key==='Enter')amt();});rmt();
-// ===== 历史完成查看 =====
+
+// ===================== 可选任务（次日自动归档） =====================
+function runDevTaskArchive(){var dd_=ld('devDate',''),td_=gtk();if(dd_!==td_){var ds_=ld('devTasks',[]),done_=[];for(var di_=ds_.length-1;di_>=0;di_--){if(ds_[di_].done){done_.push(ds_[di_]);ds_.splice(di_,1);}}if(done_.length&&dd_){var dh_=ld('devTaskHistory',{});if(!dh_[dd_])dh_[dd_]=[];done_.forEach(function(t){dh_[dd_].push({text:t.text,time:'归档'});});sd('devTaskHistory',dh_);}sd('devTasks',ds_);sd('devDate',td_);}}
+if(localStorage.getItem('zhuye2_devTasks')){runDevTaskArchive();}
+function rdt(){var l=document.getElementById('devTaskList'),t=ld('devTasks',[]);t.sort(function(a,b){if(a.done&&!b.done)return 1;if(!a.done&&b.done)return -1;return 0;});l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'✓':'';ic.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='✕';btn.onclick=function(){t.splice(i,1);sd('devTasks',t);rdt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
+function adt(){var i=document.getElementById('devTaskInput'),t=i.value.trim();if(!t)return;var ts=ld('devTasks',[]);ts.push({text:t,done:false});sd('devTasks',ts);rdt();i.value='';i.focus();}
+document.getElementById('devTaskInput').addEventListener('keydown',function(e){if(e.key==='Enter')adt();});rdt();
+
+// ===================== 历史完成查看 =====================
 var histOpen=false;
 function toggleHist(){
   histOpen=!histOpen;
@@ -345,88 +356,59 @@ function toggleHist(){
   });
   p.innerHTML=html;p.style.display='';
 }
-// ===== 日常任务（每日重置-仅清空勾选） =====
+
+// ===================== 日常任务（每日重置 + 层级列表） =====================
 function runDailyReset(){
-  var mmLastDate=ld('mmDate','');var mmToday=gtk();
+  var mmLastDate=ld('mmDate',''),mmToday=gtk();
   if(mmLastDate!==mmToday){
     var mmData=ld('mindmap',null);
-    if(mmData&&mmData.children&&mmData.children.length){
-      mmData.children.forEach(function(c){c.done=false;if(c.children)c.children.forEach(function(s){s.done=false;});});
-      sd('mindmap',mmData);
-    }
+    if(mmData&&mmData.children&&mmData.children.length){mmData.children.forEach(function(c){c.done=false;if(c.children)c.children.forEach(function(s){s.done=false;});});sd('mindmap',mmData);}
     sd('mmDate',mmToday);
   }
 }
 var mmLastDate=ld('mmDate','');var mmToday=gtk();
-if(mmLastDate!==mmToday&&localStorage.getItem('zhuye2_mindmap')){
-  runDailyReset();
-}
-// ===== 待开发 =====
-function rdt(){var l=document.getElementById('devTaskList'),t=ld('devTasks',[]);t.sort(function(a,b){if(a.done&&!b.done)return 1;if(!a.done&&b.done)return -1;return 0;});l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'✓':'';ic.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='✕';btn.onclick=function(){t.splice(i,1);sd('devTasks',t);rdt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
-function adt(){var i=document.getElementById('devTaskInput'),t=i.value.trim();if(!t)return;var ts=ld('devTasks',[]);ts.push({text:t,done:false});sd('devTasks',ts);rdt();i.value='';i.focus();}
-document.getElementById('devTaskInput').addEventListener('keydown',function(e){if(e.key==='Enter')adt();});rdt();
-// ===== 可选任务 =====
-function rl(){var l=document.getElementById('linkList'),ls=ld('links',[]);l.innerHTML='';if(!ls.length){var e=document.createElement('li');e.className='link-empty';e.textContent='添加一些常用网址吧';l.appendChild(e);return;}var cs=[{bg:'#ebf9f0',fg:'#1d9e75'},{bg:'#e6f1fb',fg:'#185fa5'},{bg:'#faeeda',fg:'#854f0b'},{bg:'#f5f3ff',fg:'#534ab7'},{bg:'#fbeaf0',fg:'#993556'},{bg:'#fcebeb',fg:'#a32d2d'}];ls.forEach(function(li,i){var el=document.createElement('li');var b=document.createElement('span');b.className='link-badge';b.style.background=cs[i%cs.length].bg;b.style.color=cs[i%cs.length].fg;b.textContent=li.name.charAt(0).toUpperCase();var n=document.createElement('span');n.className='link-name';n.textContent=li.name;var u=document.createElement('a');u.className='link-url-text';u.href=li.url;u.target='_blank';u.rel='noopener noreferrer';u.textContent='↗ '+li.url;var d=document.createElement('button');d.className='link-del';d.textContent='✕';d.onclick=function(e){e.stopPropagation();ls.splice(i,1);sd('links',ls);rl();};el.appendChild(b);el.appendChild(n);el.appendChild(u);el.appendChild(d);l.appendChild(el);});}
-function al(){var n=document.getElementById('linkNameInput').value.trim(),u=document.getElementById('linkUrlInput').value.trim();if(!n||!u)return;if(!u.startsWith('http://')&&!u.startsWith('https://'))u='https://'+u;var ls=ld('links',[]);ls.push({name:n,url:u});sd('links',ls);rl();document.getElementById('linkNameInput').value='';document.getElementById('linkUrlInput').value='';document.getElementById('linkNameInput').focus();}
-document.getElementById('linkUrlInput').addEventListener('keydown',function(e){if(e.key==='Enter')al();});
-document.getElementById('linkNameInput').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('linkUrlInput').focus();});rl();
-// ===== 日常任务（层级列表） =====
+if(mmLastDate!==mmToday&&localStorage.getItem('zhuye2_mindmap')){runDailyReset();}
+
 var mmData=ld('mindmap',{children:[{label:'电商',done:false,children:[{label:'上新',done:false},{label:'客服',done:false},{label:'发货',done:false}]},{label:'自媒体',done:false,children:[{label:'写文案',done:false},{label:'拍摄',done:false},{label:'发布',done:false}]},{label:'个人',done:false,children:[{label:'学习',done:false},{label:'复盘',done:false}]}]});
 var mmOpen={};
 function mmSave(){sd('mindmap',mmData);}
-
-function mmMakeLabel(node, li, icon){
+function mmMakeLabel(node,li,icon){
   var wrap=document.createElement('span');wrap.style.cssText='flex:1;display:flex;align-items:center;min-width:0';
   var txt=document.createElement('span');txt.className='mm-label';txt.textContent=node.label;
   var inp=document.createElement('input');inp.type='text';inp.value=node.label;
   inp.style.cssText='display:none;border:none;background:transparent;font-size:13px;color:inherit;outline:none;padding:2px 0;font-family:inherit;flex:1;min-width:30px';
   var mmClickT;
-  txt.onclick=function(){
-    if(mmClickT){clearTimeout(mmClickT);mmClickT=null;return;}
-    mmClickT=setTimeout(function(){mmClickT=null;
-      var nd=!node.done;node.done=nd;
-      if(node.children)node.children.forEach(function(c){c.done=nd;});
-      mmSave();mmRender();
-    },220);
-  };
+  txt.onclick=function(){if(mmClickT){clearTimeout(mmClickT);mmClickT=null;return;}mmClickT=setTimeout(function(){mmClickT=null;var nd=!node.done;node.done=nd;if(node.children)node.children.forEach(function(c){c.done=nd;});mmSave();mmRender();},220);};
   txt.ondblclick=function(e){if(mmClickT){clearTimeout(mmClickT);mmClickT=null;}e.stopPropagation();txt.style.display='none';inp.style.display='';inp.focus();inp.select();};
   inp.onblur=function(){node.label=inp.value||'节点';mmSave();txt.textContent=node.label;txt.style.display='';inp.style.display='none';};
   inp.onkeydown=function(e){if(e.key==='Enter')inp.blur();};
   wrap.appendChild(txt);wrap.appendChild(inp);
   return wrap;
 }
-
 function mmRender(){
   var list=document.getElementById('mmList');list.innerHTML='';
   if(!mmData.children||!mmData.children.length){var e=document.createElement('li');e.className='mm-empty';e.textContent='添加一些日常任务吧';list.appendChild(e);return;}
   mmData.children.forEach(function(p,i){
     var li=document.createElement('li');li.className='mm-parent'+(p.done?' done':'');
-    var arrow=document.createElement('button');arrow.className='mm-arrow'+(mmOpen[i]?' open':'');arrow.textContent='▶';
-    arrow.onclick=function(){mmOpen[i]=!mmOpen[i];mmRender();};
+    var arrow=document.createElement('button');arrow.className='mm-arrow'+(mmOpen[i]?' open':'');arrow.textContent='▶';arrow.onclick=function(){mmOpen[i]=!mmOpen[i];mmRender();};
     li.appendChild(arrow);
-    var icon=document.createElement('span');icon.className='mm-icon';icon.textContent=p.done?'✓':'';
-    icon.onclick=function(){var nd=!p.done;p.done=nd;if(p.children)p.children.forEach(function(c){c.done=nd;});mmSave();mmRender();};
+    var icon=document.createElement('span');icon.className='mm-icon';icon.textContent=p.done?'✓':'';icon.onclick=function(){var nd=!p.done;p.done=nd;if(p.children)p.children.forEach(function(c){c.done=nd;});mmSave();mmRender();};
     li.appendChild(icon);
-    li.appendChild(mmMakeLabel(p, li, icon));
-    var addBtn=document.createElement('button');addBtn.className='mm-add-child';addBtn.textContent='+';
-    addBtn.title='添加子任务';
-    addBtn.onclick=function(){if(!p.children)p.children=[];p.children.push({label:'子任务',done:false});mmOpen[i]=true;mmSave();mmRender();};
+    li.appendChild(mmMakeLabel(p,li,icon));
+    var addBtn=document.createElement('button');addBtn.className='mm-add-child';addBtn.textContent='+';addBtn.title='添加子任务';addBtn.onclick=function(){if(!p.children)p.children=[];p.children.push({label:'子任务',done:false});mmOpen[i]=true;mmSave();mmRender();};
     li.appendChild(addBtn);
-    var delBtn=document.createElement('button');delBtn.className='mm-del';delBtn.textContent='✕';
-    delBtn.onclick=function(){mmData.children.splice(i,1);mmSave();mmRender();};
+    var delBtn=document.createElement('button');delBtn.className='mm-del';delBtn.textContent='✕';delBtn.onclick=function(){mmData.children.splice(i,1);mmSave();mmRender();};
     li.appendChild(delBtn);
     list.appendChild(li);
     if(p.children&&p.children.length&&mmOpen[i]){
       var childUl=document.createElement('ul');childUl.className='mm-child';
       p.children.forEach(function(c,j){
         var cli=document.createElement('li');cli.className=c.done?'done':'';
-        var ci=document.createElement('span');ci.className='mm-icon';ci.textContent=c.done?'✓':'';
-        ci.onclick=function(){c.done=!c.done;var ad=true;for(var k=0;k<p.children.length;k++){if(!p.children[k].done){ad=false;break;}}p.done=ad;mmSave();mmRender();};
+        var ci=document.createElement('span');ci.className='mm-icon';ci.textContent=c.done?'✓':'';ci.onclick=function(){c.done=!c.done;var ad=true;for(var k=0;k<p.children.length;k++){if(!p.children[k].done){ad=false;break;}}p.done=ad;mmSave();mmRender();};
         cli.appendChild(ci);
         var cwrap=document.createElement('span');cwrap.style.cssText='flex:1;display:flex;align-items:center;min-width:0';
         var ctxt=document.createElement('span');ctxt.className='mm-label';ctxt.textContent=c.label;
-        var cinp=document.createElement('input');cinp.type='text';cinp.value=c.label;
-        cinp.style.cssText='display:none;border:none;background:transparent;font-size:13px;color:inherit;outline:none;padding:2px 0;font-family:inherit;flex:1;min-width:30px';
+        var cinp=document.createElement('input');cinp.type='text';cinp.value=c.label;cinp.style.cssText='display:none;border:none;background:transparent;font-size:13px;color:inherit;outline:none;padding:2px 0;font-family:inherit;flex:1;min-width:30px';
         var ctClickT;
         ctxt.onclick=function(){if(ctClickT){clearTimeout(ctClickT);ctClickT=null;return;}ctClickT=setTimeout(function(){ctClickT=null;c.done=!c.done;var ad=true;for(var k=0;k<p.children.length;k++){if(!p.children[k].done){ad=false;break;}}p.done=ad;mmSave();mmRender();},220);};
         ctxt.ondblclick=function(e){if(ctClickT){clearTimeout(ctClickT);ctClickT=null;}e.stopPropagation();ctxt.style.display='none';cinp.style.display='';cinp.focus();cinp.select();};
@@ -434,8 +416,7 @@ function mmRender(){
         cinp.onkeydown=function(e){if(e.key==='Enter')cinp.blur();};
         cwrap.appendChild(ctxt);cwrap.appendChild(cinp);
         cli.appendChild(cwrap);
-        var cd=document.createElement('button');cd.className='mm-del';cd.textContent='✕';
-        cd.onclick=function(){p.children.splice(j,1);mmSave();mmRender();};
+        var cd=document.createElement('button');cd.className='mm-del';cd.textContent='✕';cd.onclick=function(){p.children.splice(j,1);mmSave();mmRender();};
         cli.appendChild(cd);
         childUl.appendChild(cli);
       });
@@ -445,13 +426,40 @@ function mmRender(){
 }
 function mmAddParent(){if(!mmData.children)mmData.children=[];mmData.children.push({label:'分类',done:false,children:[]});mmSave();mmRender();}
 mmRender();
-// ===== 语录 =====
+
+// ===================== 可选任务（链接） =====================
+function rl(){
+  var l=document.getElementById('linkList'),ls=ld('links',[]);l.innerHTML='';
+  if(!ls.length){var e=document.createElement('li');e.className='link-empty';e.textContent='添加一些常用网址吧';l.appendChild(e);return;}
+  var cs=[{bg:'#ebf9f0',fg:'#1d9e75'},{bg:'#e6f1fb',fg:'#185fa5'},{bg:'#faeeda',fg:'#854f0b'},{bg:'#f5f3ff',fg:'#534ab7'},{bg:'#fbeaf0',fg:'#993556'},{bg:'#fcebeb',fg:'#a32d2d'}];
+  ls.forEach(function(li,i){
+    var el=document.createElement('li');
+    var b=document.createElement('span');b.className='link-badge';b.style.background=cs[i%cs.length].bg;b.style.color=cs[i%cs.length].fg;b.textContent=li.name.charAt(0).toUpperCase();
+    var n=document.createElement('span');n.className='link-name';n.textContent=li.name;
+    var u=document.createElement('a');u.className='link-url-text';u.href=li.url;u.target='_blank';u.rel='noopener noreferrer';u.textContent='↗ '+li.url;
+    var d=document.createElement('button');d.className='link-del';d.textContent='✕';d.onclick=function(e){e.stopPropagation();ls.splice(i,1);sd('links',ls);rl();};
+    el.appendChild(b);el.appendChild(n);el.appendChild(u);el.appendChild(d);l.appendChild(el);
+  });
+}
+function al(){
+  var n=document.getElementById('linkNameInput').value.trim(),u=document.getElementById('linkUrlInput').value.trim();
+  if(!n||!u)return;if(!u.startsWith('http://')&&!u.startsWith('https://'))u='https://'+u;
+  var ls=ld('links',[]);ls.push({name:n,url:u});sd('links',ls);rl();
+  document.getElementById('linkNameInput').value='';document.getElementById('linkUrlInput').value='';document.getElementById('linkNameInput').focus();
+}
+document.getElementById('linkUrlInput').addEventListener('keydown',function(e){if(e.key==='Enter')al();});
+document.getElementById('linkNameInput').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('linkUrlInput').focus();});
+rl();
+
+// ===================== 语录 =====================
 function lq(){document.getElementById('quoteArea').value=ld('quote','');uq();}
 function sq(){sd('quote',document.getElementById('quoteArea').value);uq();}
 function uq(){var t=document.getElementById('quoteArea').value,l=t.length,w=t.trim()?t.trim().split(/[\s\n]+/).length:0;document.getElementById('quoteCount').textContent=l+' 字'+(w?' · '+w+' 词':'');}
 function cq(){if(document.getElementById('quoteArea').value.trim()&&!confirm('确定清空语录吗？'))return;document.getElementById('quoteArea').value='';sq();}
 var qt;document.getElementById('quoteArea').addEventListener('input',function(){clearTimeout(qt);qt=setTimeout(sq,400);});lq();
-function syncAll(){var ks=['incomes','mainTasks','mindmap','mmDate','mtDate','devTasks','devDate','devTaskHistory','taskHistory','links','quote','profits'];var n=0;ks.forEach(function(k){var d=ld(k,null);if(d!==null){sd(k,d);n++;}});document.getElementById('syncBtn').textContent='☁️';setTimeout(function(){document.getElementById('syncBtn').textContent='☁';},2000);}
+
+// ===================== 手动同步按钮 =====================
+function syncAll(){var ks=['incomes','mainTasks','mindmap','mmDate','mtDate','devTasks','devDate','devTaskHistory','taskHistory','links','quote','profits'];ks.forEach(function(k){var d=ld(k,null);if(d!==null){sd(k,d);}});document.getElementById('syncBtn').textContent='☁️';setTimeout(function(){document.getElementById('syncBtn').textContent='☁';},2000);}
 </script>
 </body>
 </html>
