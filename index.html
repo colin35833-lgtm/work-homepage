@@ -316,14 +316,9 @@ function toggleIncHist(){
   var incTotal=0,prfTotal=0;
   allDates.forEach(function(d){
     var iv=parseFloat(inc[d])||0,pv=parseFloat(prf[d])||0;incTotal+=iv;prfTotal+=pv;
-    html+='<div style="margin-bottom:4px"><div style="font-size:11px;color:#86868b;margin-bottom:2px;font-weight:500">'+d+'</div>';
-    if(iv>0||pv>0){
-      if(iv>0)html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#e6f1fb;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#0066cc;font-size:10px">¥</span><span style="flex:1">营收</span><span>'+iv.toFixed(2)+'</span></div>';
-      if(pv>0)html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#eaf3de;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#639922;font-size:10px">◆</span><span style="flex:1">净利</span><span>'+pv.toFixed(2)+'</span></div>';
-    }
-    html+='</div>';
+    html+='<div style="display:flex;align-items:center;gap:8px;padding:4px 8px;background:#fafafa;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#86868b;font-size:11px;min-width:76px">'+d+'</span><span style="flex:1;text-align:right"><span style="color:#0066cc">¥</span> '+iv.toFixed(2)+'</span><span style="flex:1;text-align:right"><span style="color:#34c759">◆</span> '+pv.toFixed(2)+'</span></div>';
   });
-  html+='<div style="border-top:0.5px solid rgba(0,0,0,.06);margin-top:4px;padding-top:6px"><div style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:#e6f1fb;border-radius:6px;margin-bottom:2px;font-size:12px;font-weight:600"><span style="color:#0066cc;font-size:10px">¥</span><span style="flex:1">营收合计</span><span>'+incTotal.toFixed(2)+'</span></div><div style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:#eaf3de;border-radius:6px;font-size:12px;font-weight:600"><span style="color:#639922;font-size:10px">◆</span><span style="flex:1">净利合计</span><span>'+prfTotal.toFixed(2)+'</span></div></div>';
+  html+='<div style="display:flex;align-items:center;gap:8px;padding:4px 8px;background:#e6f1fb;border-radius:6px;margin-top:4px;font-size:12px;font-weight:600"><span style="min-width:76px;color:#86868b">合计</span><span style="flex:1;text-align:right">¥ '+incTotal.toFixed(2)+'</span><span style="flex:1;text-align:right">◆ '+prfTotal.toFixed(2)+'</span></div>';
   p.innerHTML=html;p.style.display='';
 }
 // ===== 主线任务（次日自动归档） =====
