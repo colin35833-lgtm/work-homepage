@@ -195,41 +195,45 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
       <span style="color:#86868b">💰</span>
       <a id="incHistToggle" style="color:#0066cc;cursor:pointer;text-decoration:none" onclick="toggleIncHist()">查看收支明细</a>
     </div>
-    <div id="incHistPanel" style="display:none;margin-top:8px;max-height:200px;overflow-y:auto"></div>
-  </div>
-    <div class="task-row">
-      <div class="card" style="display:flex;flex-direction:column">
-      <div class="card-title"><span class="icon" style="background:#7c3aed">◉</span>日常任务</div>
-      <div class="mm-toolbar">
-        <button class="mm-p" onclick="mmAddParent()">+ 添加</button>
-        <span style="font-size:11px;color:#c7c7cc">▶ 展开/收起 · 点击圆圈完成</span>
-      </div>
-      <ul class="mm-list" id="mmList">
-        <li class="mm-empty">添加一些日常任务吧</li>
-      </ul>
-    </div>
-      <div class="task-col">
-      <div class="card" style="flex:1">
-        <div class="card-title"><span class="icon" style="background:#e68a00">★</span>主线任务</div>
-        <div class="task-input-row">
-          <input type="text" id="mainTaskInput" placeholder="输入新任务，回车添加...">
-          <button onclick="amt()">添加</button>
+  <div class="task-row">
+<div class="card" style="display:flex;flex-direction:column">
+          <div class="card-title"><span class="icon" style="background:#7c3aed">◉</span>日常任务</div>
+          <div class="mm-toolbar">
+            <button class="mm-p" onclick="mmAddParent()">+ 添加</button>
+            <span style="font-size:11px;color:#c7c7cc">▶ 展开/收起 · 点击圆圈完成</span>
+          </div>
+          <ul class="mm-list" id="mmList">
+            <li class="mm-empty">添加一些日常任务吧</li>
+          </ul>
         </div>
-        <ul class="task-list" id="mainTaskList"></ul>
-      </div>
-      <div class="card" style="flex:1;display:flex;flex-direction:column">
-        <div class="card-title"><span class="icon" style="background:#34c759"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg></span>可选任务</div>
-        <div class="task-input-row">
-          <input type="text" id="devTaskInput" placeholder="输入新任务，回车添加...">
-          <button onclick="adt()">添加</button>
+          <div class="task-col">
+          
+    <div class="task-col">
+<div class="card" style="flex:1">
+              <div class="card-title"><span class="icon" style="background:#e68a00">★</span>主线任务</div>
+              <div class="task-input-row">
+                <input type="text" id="mainTaskInput" placeholder="输入新任务，回车添加...">
+                <button onclick="amt()">添加</button>
+              </div>
+              <ul class="task-list" id="mainTaskList"></ul>
+            </div>
+            
+<div class="card" style="flex:1;display:flex;flex-direction:column">
+              <div class="card-title"><span class="icon" style="background:#34c759"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg></span>可选任务</div>
+              <div class="task-input-row">
+                <input type="text" id="devTaskInput" placeholder="输入新任务，回车添加...">
+                <button onclick="adt()">添加</button>
+              </div>
+              <ul class="task-list" id="devTaskList"></ul>
+            </div>
+          </div>
         </div>
-        <ul class="task-list" id="devTaskList"></ul>
-      </div>
+          </div>
+          </div>
+        
     </div>
   </div>
-    </div>
-    </div>
-  <div class="card quote-module">
+<div class="card quote-module">
     <div class="card-title"><span class="icon" style="background:#ff3b30">"</span>语录</div>
     <textarea class="quote-area" id="quoteArea" placeholder="在这里记录今天触动你的一句话、灵感或感悟…&#10;每天随手写， 偶尔回头看看。"></textarea>
     <div class="quote-footer">
@@ -237,7 +241,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
       <button onclick="clearQuote()" id="clearQuoteBtn">清空</button>
     </div>
   </div>
-  <div class="card" style="margin-top:16px">
+  
+<div class="card" style="margin-top:16px">
     <div class="card-title"><span class="icon" style="background:#c9208a">○</span>待开发</div>
     <div class="link-input-row">
       <input type="text" class="link-name-input" id="linkNameInput" placeholder="名称（如 淘宝后台）">
