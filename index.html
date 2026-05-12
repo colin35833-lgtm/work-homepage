@@ -160,7 +160,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
 <div class="container">
   <div class="header">
     <h1>工作主页</h1>
-    <p>电商 · 自媒体 · 日常</p>
+    <p>电商 · 自媒体 · 日常</p><span id="syncBtn" onclick="syncAll()" style="cursor:pointer;font-size:16px;margin-left:8px;user-select:none" title="手动同步所有数据到云端">☁</span>
   </div>
   <div class="card" style="margin-bottom:16px">
     <div class="card-title"><span class="icon" style="background:#0066cc">¥</span>营收 · 利润</div>
@@ -451,6 +451,7 @@ function sq(){sd('quote',document.getElementById('quoteArea').value);uq();}
 function uq(){var t=document.getElementById('quoteArea').value,l=t.length,w=t.trim()?t.trim().split(/[\s\n]+/).length:0;document.getElementById('quoteCount').textContent=l+' 字'+(w?' · '+w+' 词':'');}
 function cq(){if(document.getElementById('quoteArea').value.trim()&&!confirm('确定清空语录吗？'))return;document.getElementById('quoteArea').value='';sq();}
 var qt;document.getElementById('quoteArea').addEventListener('input',function(){clearTimeout(qt);qt=setTimeout(sq,400);});lq();
+function syncAll(){var ks=['incomes','mainTasks','mindmap','mmDate','mtDate','devTasks','devDate','devTaskHistory','taskHistory','links','quote','profits'];var n=0;ks.forEach(function(k){var d=ld(k,null);if(d!==null){sd(k,d);n++;}});document.getElementById('syncBtn').textContent='☁️';setTimeout(function(){document.getElementById('syncBtn').textContent='☁';},2000);}
 </script>
 </body>
 </html>
