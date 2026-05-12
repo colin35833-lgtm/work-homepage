@@ -259,14 +259,10 @@ document.getElementById('setupPwdConfirm').addEventListener('keydown',function(e
 cl();
 function sd(k,d){
   localStorage.setItem('zhuye2_'+k,JSON.stringify(d));
-  // 同步到 Supabase（异步，不阻塞）
-  fetch('https://lmfvfaobkmraiajodede.supabase.co/rest/v1/app_data',{
-    method:'POST',
-    headers:{'apikey':'sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Authorization':'Bearer sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},
-    body:JSON.stringify({id:k,data:d})
-  }).catch(function(){});
-}
-function ld(k,d){try{var v=localStorage.getItem('zhuye2_'+k);return v?JSON.parse(v):d;}catch(e){return d;}}
+  var b=JSON.stringify({id:k,data:d});
+  function sp(){fetch('https://lmfvfaobkmraiajodede.supabase.co/rest/v1/app_data',{method:'POST',headers:{'apikey':'sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Authorization':'Bearer sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:b}).catch(function(){setTimeout(sp,3000);});}
+  sp();
+}function ld(k,d){try{var v=localStorage.getItem('zhuye2_'+k);return v?JSON.parse(v):d;}catch(e){return d;}}
 // 云端数据同步（首次打开拉一次，后续修改靠sd实时推）
 (function(){
   if(sessionStorage.getItem('zhuye2_synced'))return;
