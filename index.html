@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>工作主页</title>
+<title>宸ヤ綔涓婚〉</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#f5f5f7;color:#1d1d1f;padding:20px;min-height:100vh}
@@ -68,7 +68,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
 .link-list li .link-del:hover{color:#a32d2d;background:#fcebeb}
 .link-empty{display:flex;align-items:center;justify-content:center;flex:1;color:#c7c7cc;font-size:13px;min-height:120px}
 
-/* 日常任务 - 层级列表 */
+/* 鏃ュ父浠诲姟 - 灞傜骇鍒楄〃 */
 .mm-toolbar{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;align-items:center}
 .mm-toolbar button{padding:5px 12px;border:1px solid #d2d2d7;border-radius:7px;font-size:12px;cursor:pointer;background:#fff;color:#1d1d1f;transition:all .15s}
 .mm-toolbar button:hover{background:#f5f5f7;border-color:#c7c7cc}
@@ -139,116 +139,116 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
 <body>
 <div class="lock-overlay" id="lockOverlay">
   <div class="lock-box" id="lockBox">
-    <h2>🔒 工作主页</h2>
-    <p>输入密码解锁</p>
-    <input type="password" id="lockPwdInput" placeholder="密码" maxlength="20" autofocus>
+    <h2>馃敀 宸ヤ綔涓婚〉</h2>
+    <p>杈撳叆瀵嗙爜瑙ｉ攣</p>
+    <input type="password" id="lockPwdInput" placeholder="瀵嗙爜" maxlength="20" autofocus>
     <div class="lock-error" id="lockError"></div>
-    <button class="lock-btn" onclick="unlock()">解锁</button>
-    <a class="lock-hint" onclick="showSetup()">设置新密码</a>
+    <button class="lock-btn" onclick="unlock()">瑙ｉ攣</button>
+    <a class="lock-hint" onclick="showSetup()">璁剧疆鏂板瘑鐮?/a>
   </div>
   <div class="lock-setup" id="lockSetup" style="display:none">
-    <h2>设置密码</h2>
-    <p id="setupDesc">首次使用，请设置一个锁屏密码</p>
-    <input type="password" id="setupOldPwd" placeholder="旧密码" maxlength="20" style="display:none">
-    <input type="password" id="setupPwdInput" placeholder="新密码" maxlength="20" autofocus>
-    <input type="password" id="setupPwdConfirm" placeholder="再次输入新密码" maxlength="20">
+    <h2>璁剧疆瀵嗙爜</h2>
+    <p id="setupDesc">棣栨浣跨敤锛岃璁剧疆涓€涓攣灞忓瘑鐮?/p>
+    <input type="password" id="setupOldPwd" placeholder="鏃у瘑鐮? maxlength="20" style="display:none">
+    <input type="password" id="setupPwdInput" placeholder="鏂板瘑鐮? maxlength="20" autofocus>
+    <input type="password" id="setupPwdConfirm" placeholder="鍐嶆杈撳叆鏂板瘑鐮? maxlength="20">
     <div class="lock-error" id="setupError"></div>
-    <button class="lock-btn" onclick="setupPassword()">确认</button>
-    <a class="lock-hint" id="setupBack" onclick="backToLock()" style="display:none;margin-top:10px">返回</a>
+    <button class="lock-btn" onclick="setupPassword()">纭</button>
+    <a class="lock-hint" id="setupBack" onclick="backToLock()" style="display:none;margin-top:10px">杩斿洖</a>
   </div>
 </div>
 <div class="container">
   <div class="header">
-    <h1>工作主页</h1>
-    <p>电商 · 自媒体 · 日常</p><span id="syncBtn" onclick="syncAll()" style="cursor:pointer;font-size:16px;margin-left:8px;user-select:none" title="手动同步所有数据到云端">☁</span>
+    <h1>宸ヤ綔涓婚〉</h1>
+    <p>鐢靛晢 路 鑷獟浣?路 鏃ュ父</p><span id="syncBtn" onclick="syncAll()" style="cursor:pointer;font-size:16px;margin-left:8px;user-select:none" title="鎵嬪姩鍚屾鎵€鏈夋暟鎹埌浜戠">鈽?/span>
   </div>
   <div class="card" style="margin-bottom:16px">
-    <div class="card-title"><span class="icon" style="background:#0066cc">¥</span>营收 · 利润</div>
+    <div class="card-title"><span class="icon" style="background:#0066cc">楼</span>钀ユ敹 路 鍒╂鼎</div>
     <div style="font-size:12px;color:#86868b;margin-bottom:12px"><span id="dateDisplay"></span></div>
     <div class="income-grid" style="grid-template-columns:1fr 1fr 1fr 1fr">
       <div class="income-item">
-        <div class="income-label">总营收</div>
-        <div class="income-value"><span class="symbol">¥</span><span id="totalIncome">0.00</span></div>
+        <div class="income-label">鎬昏惀鏀?/div>
+        <div class="income-value"><span class="symbol">楼</span><span id="totalIncome">0.00</span></div>
       </div>
       <div class="income-item">
-        <div class="income-label">总利润</div>
-        <div class="income-value"><span class="symbol" style="color:#34c759">◆</span><span id="totalProfit">0.00</span></div>
+        <div class="income-label">鎬诲埄娑?/div>
+        <div class="income-value"><span class="symbol" style="color:#34c759">鈼?/span><span id="totalProfit">0.00</span></div>
       </div>
       <div class="income-item">
-        <div class="income-label">今日营收</div>
-        <div class="income-value"><span class="symbol">¥</span><input type="number" id="dailyIncome" class="income-input" placeholder="0" step="0.01"></div>
+        <div class="income-label">浠婃棩钀ユ敹</div>
+        <div class="income-value"><span class="symbol">楼</span><input type="number" id="dailyIncome" class="income-input" placeholder="0" step="0.01"></div>
       </div>
       <div class="income-item">
-        <div class="income-label">日净利润</div>
-        <div class="income-value"><span class="symbol" style="color:#34c759">◆</span><input type="number" id="dailyProfit" class="income-input" placeholder="0" step="0.01"></div>
+        <div class="income-label">鏃ュ噣鍒╂鼎</div>
+        <div class="income-value"><span class="symbol" style="color:#34c759">鈼?/span><input type="number" id="dailyProfit" class="income-input" placeholder="0" step="0.01"></div>
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:#86868b">
-      <span>💰</span>
-      <a id="incHistToggle" style="color:#0066cc;cursor:pointer;text-decoration:none" onclick="toggleIncHist()">查看收支明细</a>
+      <span>馃挵</span>
+      <a id="incHistToggle" style="color:#0066cc;cursor:pointer;text-decoration:none" onclick="toggleIncHist()">鏌ョ湅鏀舵敮鏄庣粏</a>
     </div>
     <div id="incHistPanel" style="display:none;margin-top:8px;max-height:200px;overflow-y:auto"></div>
     <div style="margin-top:10px;border-top:0.5px solid rgba(0,0,0,.06);padding-top:10px">
       <div style="display:flex;align-items:center;gap:10px;font-size:12px">
-        <span style="color:#86868b">📋</span>
-        <a id="histToggle" style="color:#0066cc;cursor:pointer;text-decoration:none" onclick="toggleHist()">查看历史完成</a>
-        <span style="color:#c7c7cc;font-size:11px">（主线任务完成后自动归档）</span>
+        <span style="color:#86868b">馃搵</span>
+        <a id="histToggle" style="color:#0066cc;cursor:pointer;text-decoration:none" onclick="toggleHist()">鏌ョ湅鍘嗗彶瀹屾垚</a>
+        <span style="color:#c7c7cc;font-size:11px">锛堜富绾夸换鍔″畬鎴愬悗鑷姩褰掓。锛?/span>
       </div>
       <div id="histPanel" style="display:none;margin-top:8px;max-height:200px;overflow-y:auto"></div>
     </div>
   </div>
   <div class="task-row">
     <div class="card" style="display:flex;flex-direction:column">
-      <div class="card-title"><span class="icon" style="background:#7c3aed">◉</span>日常任务</div>
+      <div class="card-title"><span class="icon" style="background:#7c3aed">鈼?/span>鏃ュ父浠诲姟</div>
       <div class="mm-toolbar">
-        <button class="mm-p" onclick="mmAddParent()">+ 添加</button>
-        <span style="font-size:11px;color:#c7c7cc">▶ 展开/收起 · 点击圆圈完成</span>
+        <button class="mm-p" onclick="mmAddParent()">+ 娣诲姞</button>
+        <span style="font-size:11px;color:#c7c7cc">鈻?灞曞紑/鏀惰捣 路 鐐瑰嚮鍦嗗湀瀹屾垚</span>
       </div>
       <ul class="mm-list" id="mmList">
-        <li class="mm-empty">添加一些日常任务吧</li>
+        <li class="mm-empty">娣诲姞涓€浜涙棩甯镐换鍔″惂</li>
       </ul>
     </div>
     <div class="task-col">
       <div class="card" style="flex:1">
-        <div class="card-title"><span class="icon" style="background:#e68a00">★</span>主线任务</div>
+        <div class="card-title"><span class="icon" style="background:#e68a00">鈽?/span>涓荤嚎浠诲姟</div>
         <div class="task-input-row">
-          <input type="text" id="mainTaskInput" placeholder="输入新任务，回车添加...">
-          <button onclick="amt()">添加</button>
+          <input type="text" id="mainTaskInput" placeholder="杈撳叆鏂颁换鍔★紝鍥炶溅娣诲姞...">
+          <button onclick="amt()">娣诲姞</button>
         </div>
         <ul class="task-list" id="mainTaskList"></ul>
       </div>
       <div class="card" style="flex:1;display:flex;flex-direction:column">
-        <div class="card-title"><span class="icon" style="background:#34c759"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg></span>可选任务</div>
+        <div class="card-title"><span class="icon" style="background:#34c759"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg></span>鍙€変换鍔?/div>
         <div class="task-input-row">
-          <input type="text" id="devTaskInput" placeholder="输入新任务，回车添加...">
-          <button onclick="adt()">添加</button>
+          <input type="text" id="devTaskInput" placeholder="杈撳叆鏂颁换鍔★紝鍥炶溅娣诲姞...">
+          <button onclick="adt()">娣诲姞</button>
         </div>
         <ul class="task-list" id="devTaskList"></ul>
       </div>
     </div>
   </div>
   <div class="card quote-module">
-    <div class="card-title"><span class="icon" style="background:#ff3b30">"</span>语录</div>
-    <textarea class="quote-area" id="quoteArea" placeholder="在这里记录今天触动你的一句话、灵感或感悟…&#10;每天随手写， 偶尔回头看看。"></textarea>
+    <div class="card-title"><span class="icon" style="background:#ff3b30">"</span>璇綍</div>
+    <textarea class="quote-area" id="quoteArea" placeholder="鍦ㄨ繖閲岃褰曚粖澶╄Е鍔ㄤ綘鐨勪竴鍙ヨ瘽銆佺伒鎰熸垨鎰熸偀鈥?#10;姣忓ぉ闅忔墜鍐欙紝 鍋跺皵鍥炲ご鐪嬬湅銆?></textarea>
     <div class="quote-footer">
-      <span id="quoteCount">0 字</span>
-      <button onclick="clearQuote()" id="clearQuoteBtn">清空</button>
+      <span id="quoteCount">0 瀛?/span>
+      <button onclick="clearQuote()" id="clearQuoteBtn">娓呯┖</button>
     </div>
   </div>
   <div class="card" style="margin-top:16px">
-    <div class="card-title"><span class="icon" style="background:#c9208a">○</span>待开发</div>
+    <div class="card-title"><span class="icon" style="background:#c9208a">鈼?/span>寰呭紑鍙?/div>
     <div class="link-input-row">
-      <input type="text" class="link-name-input" id="linkNameInput" placeholder="名称（如 淘宝后台）">
-      <input type="text" class="link-url-input" id="linkUrlInput" placeholder="网址链接">
-      <button onclick="al()">添加</button>
+      <input type="text" class="link-name-input" id="linkNameInput" placeholder="鍚嶇О锛堝 娣樺疂鍚庡彴锛?>
+      <input type="text" class="link-url-input" id="linkUrlInput" placeholder="缃戝潃閾炬帴">
+      <button onclick="al()">娣诲姞</button>
     </div>
     <ul class="link-list" id="linkList">
-      <li class="link-empty" id="linkEmpty">添加一些常用网址吧</li>
+      <li class="link-empty" id="linkEmpty">娣诲姞涓€浜涘父鐢ㄧ綉鍧€鍚?/li>
     </ul>
   </div>
 </div>
 <script>
-// ===================== 数据层 =====================
+// ===================== 鏁版嵁灞?=====================
 function sd(k,d){
   localStorage.setItem('zhuye2_'+k,JSON.stringify(d));
   var b=JSON.stringify({id:k,data:d});
@@ -257,8 +257,7 @@ function sd(k,d){
 function ld(k,d){try{var v=localStorage.getItem('zhuye2_'+k);return v?JSON.parse(v):d;}catch(e){return d;}}
 function gtk(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 
-// 首次打开从云端拉取（只补充本地没有的）
-(function(){if(sessionStorage.getItem('zhuye2_synced'))return;
+// 棣栨鎵撳紑浠庝簯绔媺鍙栵紙鍙ˉ鍏呮湰鍦版病鏈夌殑锛?(function(){if(sessionStorage.getItem('zhuye2_synced'))return;
   fetch('https://lmfvfaobkmraiajodede.supabase.co/rest/v1/app_data',{headers:{'apikey':'sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq','Authorization':'Bearer sb_publishable_8sesGXR0bAHLkOgqMD7kUg_qoWT8Haq'}})
   .then(function(r){return r.json();}).then(function(rows){
     var hasData=false;
@@ -269,95 +268,95 @@ function gtk(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1
   }).catch(function(){sessionStorage.setItem('zhuye2_synced','1');});
 })();
 
-// ===================== 密码锁 =====================
+// ===================== 瀵嗙爜閿?=====================
 var PK='zhuye2_password',UK='zhuye2_unlocked';
 function cl(){
   var p=localStorage.getItem(PK);
-  if(!p){document.getElementById('lockSetup').style.display='';document.getElementById('lockBox').style.display='none';document.getElementById('setupOldPwd').style.display='none';document.getElementById('setupBack').style.display='none';document.getElementById('setupDesc').textContent='首次使用，请设置一个锁屏密码';document.getElementById('setupPwdInput').focus();}
+  if(!p){document.getElementById('lockSetup').style.display='';document.getElementById('lockBox').style.display='none';document.getElementById('setupOldPwd').style.display='none';document.getElementById('setupBack').style.display='none';document.getElementById('setupDesc').textContent='棣栨浣跨敤锛岃璁剧疆涓€涓攣灞忓瘑鐮?;document.getElementById('setupPwdInput').focus();}
   else if(sessionStorage.getItem(UK)){document.getElementById('lockOverlay').classList.add('hidden');}
   else{document.getElementById('lockSetup').style.display='none';document.getElementById('lockBox').style.display='';document.getElementById('lockPwdInput').focus();}
 }
 function sp(){
   var e=document.getElementById('setupError'),s=localStorage.getItem(PK);
-  if(s){var o=document.getElementById('setupOldPwd').value;if(o!==s){e.textContent='旧密码错误';return;}}
+  if(s){var o=document.getElementById('setupOldPwd').value;if(o!==s){e.textContent='鏃у瘑鐮侀敊璇?;return;}}
   var p=document.getElementById('setupPwdInput').value,c=document.getElementById('setupPwdConfirm').value;
-  if(!p){e.textContent='请输入新密码';return;}if(p.length<3){e.textContent='密码至少3位';return;}if(p!==c){e.textContent='两次密码不一致';return;}
+  if(!p){e.textContent='璇疯緭鍏ユ柊瀵嗙爜';return;}if(p.length<3){e.textContent='瀵嗙爜鑷冲皯3浣?;return;}if(p!==c){e.textContent='涓ゆ瀵嗙爜涓嶄竴鑷?;return;}
   e.textContent='';localStorage.setItem(PK,p);sessionStorage.setItem(UK,'1');document.getElementById('lockOverlay').classList.add('hidden');
 }
 function ul(){
   var p=document.getElementById('lockPwdInput').value,e=document.getElementById('lockError'),s=localStorage.getItem(PK);
   if(p===s){e.textContent='';sessionStorage.setItem(UK,'1');document.getElementById('lockOverlay').classList.add('hidden');}
-  else{e.textContent='密码错误，请重试';document.getElementById('lockPwdInput').value='';document.getElementById('lockPwdInput').focus();}
+  else{e.textContent='瀵嗙爜閿欒锛岃閲嶈瘯';document.getElementById('lockPwdInput').value='';document.getElementById('lockPwdInput').focus();}
 }
-function ss(){document.getElementById('lockBox').style.display='none';document.getElementById('lockSetup').style.display='';document.getElementById('setupOldPwd').style.display='';document.getElementById('setupBack').style.display='';document.getElementById('setupDesc').textContent='输入旧密码，然后设置新密码';document.getElementById('setupOldPwd').focus();}
+function ss(){document.getElementById('lockBox').style.display='none';document.getElementById('lockSetup').style.display='';document.getElementById('setupOldPwd').style.display='';document.getElementById('setupBack').style.display='';document.getElementById('setupDesc').textContent='杈撳叆鏃у瘑鐮侊紝鐒跺悗璁剧疆鏂板瘑鐮?;document.getElementById('setupOldPwd').focus();}
 function bl(){document.getElementById('lockSetup').style.display='none';document.getElementById('lockBox').style.display='';document.getElementById('lockPwdInput').value='';document.getElementById('lockError').textContent='';document.getElementById('lockPwdInput').focus();}
 document.getElementById('lockPwdInput').addEventListener('keydown',function(e){if(e.key==='Enter')ul();});
 document.getElementById('setupPwdConfirm').addEventListener('keydown',function(e){if(e.key==='Enter')sp();});
 cl();
 
-// ===================== 营收 · 利润 =====================
-function ud(){var d=new Date();document.getElementById('dateDisplay').textContent=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';}
+// ===================== 钀ユ敹 路 鍒╂鼎 =====================
+function ud(){var d=new Date();document.getElementById('dateDisplay').textContent=d.getFullYear()+'骞?+(d.getMonth()+1)+'鏈?+d.getDate()+'鏃?;}
 ud();
 function ct(){var i=ld('incomes',{}),t=0;for(var k in i)t+=parseFloat(i[k])||0;document.getElementById('totalIncome').textContent=t.toFixed(2);}
 function ldi(){var k=gtk(),i=ld('incomes',{});document.getElementById('dailyIncome').value=i[k]||'';ct();}
-var it;document.getElementById('dailyIncome').addEventListener('input',function(){clearTimeout(it);var s=this;it=setTimeout(function(){var v=parseFloat(s.value)||0,k=gtk(),i=ld('incomes',{});if(v>0)i[k]=v;else delete i[k];sd('incomes',i);ct();},300);});
+var it;document.getElementById('dailyIncome').addEventListener('input',function(){clearTimeout(it);var s=this;it=setTimeout(function(){var raw=s.value.trim();if(raw==='-'||raw==='')return;var v=parseFloat(raw)||0,k=gtk(),i=ld('incomes',{});if(v!==0)i[k]=v;else delete i[k];sd('incomes',i);ct();},300);});
 ldi();
 function pct(){var i=ld('profits',{}),t=0;for(var k in i)t+=parseFloat(i[k])||0;document.getElementById('totalProfit').textContent=t.toFixed(2);}
 function pldi(){var k=gtk(),i=ld('profits',{});document.getElementById('dailyProfit').value=i[k]||'';pct();}
-var pit;document.getElementById('dailyProfit').addEventListener('input',function(){clearTimeout(pit);var s=this;pit=setTimeout(function(){var v=parseFloat(s.value)||0,k=gtk(),i=ld('profits',{});if(v>0)i[k]=v;else delete i[k];sd('profits',i);pct();},300);});
+var pit;document.getElementById('dailyProfit').addEventListener('input',function(){clearTimeout(pit);var s=this;pit=setTimeout(function(){var raw=s.value.trim();if(raw==='-'||raw==='')return;var v=parseFloat(raw)||0,k=gtk(),i=ld('profits',{});if(v!==0)i[k]=v;else delete i[k];sd('profits',i);pct();},300);});
 pldi();
 
-// ===================== 收支明细 =====================
+// ===================== 鏀舵敮鏄庣粏 =====================
 var incHistOpen=false;
 function toggleIncHist(){
   incHistOpen=!incHistOpen;
   var p=document.getElementById('incHistPanel'),t=document.getElementById('incHistToggle');
-  if(!incHistOpen){p.style.display='none';t.textContent='查看收支明细';return;}
-  t.textContent='收起明细';
+  if(!incHistOpen){p.style.display='none';t.textContent='鏌ョ湅鏀舵敮鏄庣粏';return;}
+  t.textContent='鏀惰捣鏄庣粏';
   var inc=ld('incomes',{}),prf=ld('profits',{}),allDates=Object.keys(inc).concat(Object.keys(prf)).filter(function(v,i,a){return a.indexOf(v)===i;}).sort().reverse(),html='';
-  if(!allDates.length){p.innerHTML='<div style="color:#c7c7cc;font-size:12px;padding:10px;text-align:center">暂无记录</div>';p.style.display='';return;}
+  if(!allDates.length){p.innerHTML='<div style="color:#c7c7cc;font-size:12px;padding:10px;text-align:center">鏆傛棤璁板綍</div>';p.style.display='';return;}
   var incTotal=0,prfTotal=0;
   allDates.forEach(function(d){
     var iv=parseFloat(inc[d])||0,pv=parseFloat(prf[d])||0;incTotal+=iv;prfTotal+=pv;
-    html+='<div style="display:flex;align-items:center;gap:8px;padding:4px 8px;background:#fafafa;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#86868b;font-size:11px;min-width:76px">'+d+'</span><span style="flex:1;text-align:right"><span style="color:#0066cc">¥</span> '+iv.toFixed(2)+'</span><span style="flex:1;text-align:right"><span style="color:#34c759">◆</span> '+pv.toFixed(2)+'</span></div>';
+    html+='<div style="display:flex;align-items:center;gap:8px;padding:4px 8px;background:#fafafa;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#86868b;font-size:11px;min-width:76px">'+d+'</span><span style="flex:1;text-align:right"><span style="color:#0066cc">楼</span> '+iv.toFixed(2)+'</span><span style="flex:1;text-align:right"><span style="color:#34c759">鈼?/span> '+pv.toFixed(2)+'</span></div>';
   });
-  html+='<div style="display:flex;align-items:center;gap:8px;padding:4px 8px;background:#e6f1fb;border-radius:6px;margin-top:4px;font-size:12px;font-weight:600"><span style="min-width:76px;color:#86868b">合计</span><span style="flex:1;text-align:right">¥ '+incTotal.toFixed(2)+'</span><span style="flex:1;text-align:right">◆ '+prfTotal.toFixed(2)+'</span></div>';
+  html+='<div style="display:flex;align-items:center;gap:8px;padding:4px 8px;background:#e6f1fb;border-radius:6px;margin-top:4px;font-size:12px;font-weight:600"><span style="min-width:76px;color:#86868b">鍚堣</span><span style="flex:1;text-align:right">楼 '+incTotal.toFixed(2)+'</span><span style="flex:1;text-align:right">鈼?'+prfTotal.toFixed(2)+'</span></div>';
   p.innerHTML=html;p.style.display='';
 }
 
-// ===================== 主线任务（次日自动归档） =====================
-function runMainTaskArchive(){var ld_=ld('mtDate',''),td_=gtk();if(ld_!==td_){var ts_=ld('mainTasks',[]),done_=[];for(var i_=ts_.length-1;i_>=0;i_--){if(ts_[i_].done){done_.push(ts_[i_]);ts_.splice(i_,1);}}if(done_.length&&ld_){var h_=ld('taskHistory',{});if(!h_[ld_])h_[ld_]=[];done_.forEach(function(t){h_[ld_].push({text:t.text,time:'归档'});});sd('taskHistory',h_);}sd('mainTasks',ts_);sd('mtDate',td_);}}
+// ===================== 涓荤嚎浠诲姟锛堟鏃ヨ嚜鍔ㄥ綊妗ｏ級 =====================
+function runMainTaskArchive(){var ld_=ld('mtDate',''),td_=gtk();if(ld_!==td_){var ts_=ld('mainTasks',[]),done_=[];for(var i_=ts_.length-1;i_>=0;i_--){if(ts_[i_].done){done_.push(ts_[i_]);ts_.splice(i_,1);}}if(done_.length&&ld_){var h_=ld('taskHistory',{});if(!h_[ld_])h_[ld_]=[];done_.forEach(function(t){h_[ld_].push({text:t.text,time:'褰掓。'});});sd('taskHistory',h_);}sd('mainTasks',ts_);sd('mtDate',td_);}}
 if(localStorage.getItem('zhuye2_mainTasks')){runMainTaskArchive();}
-function rmt(){var l=document.getElementById('mainTaskList'),t=ld('mainTasks',[]);l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'✓':'';ic.onclick=function(){e.done=!e.done;sd('mainTasks',t);rmt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('mainTasks',t);rmt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='✕';btn.onclick=function(){t.splice(i,1);sd('mainTasks',t);rmt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
+function rmt(){var l=document.getElementById('mainTaskList'),t=ld('mainTasks',[]);l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'鉁?:'';ic.onclick=function(){e.done=!e.done;sd('mainTasks',t);rmt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('mainTasks',t);rmt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='鉁?;btn.onclick=function(){t.splice(i,1);sd('mainTasks',t);rmt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
 function amt(){var i=document.getElementById('mainTaskInput'),t=i.value.trim();if(!t)return;var ts=ld('mainTasks',[]);ts.push({text:t,done:false});sd('mainTasks',ts);rmt();i.value='';i.focus();}
 document.getElementById('mainTaskInput').addEventListener('keydown',function(e){if(e.key==='Enter')amt();});rmt();
 
-// ===================== 可选任务（次日自动归档） =====================
-function runDevTaskArchive(){var dd_=ld('devDate',''),td_=gtk();if(dd_!==td_){var ds_=ld('devTasks',[]),done_=[];for(var di_=ds_.length-1;di_>=0;di_--){if(ds_[di_].done){done_.push(ds_[di_]);ds_.splice(di_,1);}}if(done_.length&&dd_){var dh_=ld('devTaskHistory',{});if(!dh_[dd_])dh_[dd_]=[];done_.forEach(function(t){dh_[dd_].push({text:t.text,time:'归档'});});sd('devTaskHistory',dh_);}sd('devTasks',ds_);sd('devDate',td_);}}
+// ===================== 鍙€変换鍔★紙娆℃棩鑷姩褰掓。锛?=====================
+function runDevTaskArchive(){var dd_=ld('devDate',''),td_=gtk();if(dd_!==td_){var ds_=ld('devTasks',[]),done_=[];for(var di_=ds_.length-1;di_>=0;di_--){if(ds_[di_].done){done_.push(ds_[di_]);ds_.splice(di_,1);}}if(done_.length&&dd_){var dh_=ld('devTaskHistory',{});if(!dh_[dd_])dh_[dd_]=[];done_.forEach(function(t){dh_[dd_].push({text:t.text,time:'褰掓。'});});sd('devTaskHistory',dh_);}sd('devTasks',ds_);sd('devDate',td_);}}
 if(localStorage.getItem('zhuye2_devTasks')){runDevTaskArchive();}
-function rdt(){var l=document.getElementById('devTaskList'),t=ld('devTasks',[]);t.sort(function(a,b){if(a.done&&!b.done)return 1;if(!a.done&&b.done)return -1;return 0;});l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'✓':'';ic.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='✕';btn.onclick=function(){t.splice(i,1);sd('devTasks',t);rdt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
+function rdt(){var l=document.getElementById('devTaskList'),t=ld('devTasks',[]);t.sort(function(a,b){if(a.done&&!b.done)return 1;if(!a.done&&b.done)return -1;return 0;});l.innerHTML='';t.forEach(function(e,i){var li=document.createElement('li');li.className=e.done?'done-item':'pending';var ic=document.createElement('span');ic.className='task-icon';ic.textContent=e.done?'鉁?:'';ic.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var sp=document.createElement('span');sp.className='task-text';sp.textContent=e.text;sp.onclick=function(){e.done=!e.done;sd('devTasks',t);rdt();};var btn=document.createElement('button');btn.className='del-btn';btn.innerHTML='鉁?;btn.onclick=function(){t.splice(i,1);sd('devTasks',t);rdt();};li.appendChild(ic);li.appendChild(sp);li.appendChild(btn);l.appendChild(li);});}
 function adt(){var i=document.getElementById('devTaskInput'),t=i.value.trim();if(!t)return;var ts=ld('devTasks',[]);ts.push({text:t,done:false});sd('devTasks',ts);rdt();i.value='';i.focus();}
 document.getElementById('devTaskInput').addEventListener('keydown',function(e){if(e.key==='Enter')adt();});rdt();
 
-// ===================== 历史完成查看 =====================
+// ===================== 鍘嗗彶瀹屾垚鏌ョ湅 =====================
 var histOpen=false;
 function toggleHist(){
   histOpen=!histOpen;
   var p=document.getElementById('histPanel'),t=document.getElementById('histToggle');
-  if(!histOpen){p.style.display='none';t.textContent='查看历史完成';return;}
-  t.textContent='收起历史';
+  if(!histOpen){p.style.display='none';t.textContent='鏌ョ湅鍘嗗彶瀹屾垚';return;}
+  t.textContent='鏀惰捣鍘嗗彶';
   var mh=ld('taskHistory',{}),dh=ld('devTaskHistory',{}),dates=Object.keys(mh).concat(Object.keys(dh)).filter(function(v,i,a){return a.indexOf(v)===i;}).sort().reverse(),html='';
-  if(!dates.length){p.innerHTML='<div style="color:#c7c7cc;font-size:12px;padding:10px;text-align:center">暂无历史记录</div>';p.style.display='';return;}
+  if(!dates.length){p.innerHTML='<div style="color:#c7c7cc;font-size:12px;padding:10px;text-align:center">鏆傛棤鍘嗗彶璁板綍</div>';p.style.display='';return;}
   dates.forEach(function(d){
-    html+='<div style="margin-bottom:6px"><div style="font-size:11px;color:#86868b;margin-bottom:3px;font-weight:500">📅 '+d+'</div>';
-    if(mh[d]){mh[d].forEach(function(i){html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#e6f1fb;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#185fa5;font-size:10px">★</span><span style="flex:1">'+i.text+'</span><span style="color:#c7c7cc;font-size:10px">主线</span></div>';});}
-    if(dh[d]){dh[d].forEach(function(i){html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#e6f1fb;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#34c759;font-size:12px">◆</span><span style="flex:1">'+i.text+'</span><span style="color:#c7c7cc;font-size:10px">可选</span></div>';});}
+    html+='<div style="margin-bottom:6px"><div style="font-size:11px;color:#86868b;margin-bottom:3px;font-weight:500">馃搮 '+d+'</div>';
+    if(mh[d]){mh[d].forEach(function(i){html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#e6f1fb;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#185fa5;font-size:10px">鈽?/span><span style="flex:1">'+i.text+'</span><span style="color:#c7c7cc;font-size:10px">涓荤嚎</span></div>';});}
+    if(dh[d]){dh[d].forEach(function(i){html+='<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;background:#e6f1fb;border-radius:6px;margin-bottom:2px;font-size:12px"><span style="color:#34c759;font-size:12px">鈼?/span><span style="flex:1">'+i.text+'</span><span style="color:#c7c7cc;font-size:10px">鍙€?/span></div>';});}
     html+='</div>';
   });
   p.innerHTML=html;p.style.display='';
 }
 
-// ===================== 日常任务（每日重置 + 层级列表） =====================
+// ===================== 鏃ュ父浠诲姟锛堟瘡鏃ラ噸缃?+ 灞傜骇鍒楄〃锛?=====================
 function runDailyReset(){
   var mmLastDate=ld('mmDate',''),mmToday=gtk();
   if(mmLastDate!==mmToday){
@@ -369,7 +368,7 @@ function runDailyReset(){
 var mmLastDate=ld('mmDate','');var mmToday=gtk();
 if(mmLastDate!==mmToday&&localStorage.getItem('zhuye2_mindmap')){runDailyReset();}
 
-var mmData=ld('mindmap',{children:[{label:'电商',done:false,children:[{label:'上新',done:false},{label:'客服',done:false},{label:'发货',done:false}]},{label:'自媒体',done:false,children:[{label:'写文案',done:false},{label:'拍摄',done:false},{label:'发布',done:false}]},{label:'个人',done:false,children:[{label:'学习',done:false},{label:'复盘',done:false}]}]});
+var mmData=ld('mindmap',{children:[{label:'鐢靛晢',done:false,children:[{label:'涓婃柊',done:false},{label:'瀹㈡湇',done:false},{label:'鍙戣揣',done:false}]},{label:'鑷獟浣?,done:false,children:[{label:'鍐欐枃妗?,done:false},{label:'鎷嶆憚',done:false},{label:'鍙戝竷',done:false}]},{label:'涓汉',done:false,children:[{label:'瀛︿範',done:false},{label:'澶嶇洏',done:false}]}]});
 var mmOpen={};
 function mmSave(){sd('mindmap',mmData);}
 function mmMakeLabel(node,li,icon){
@@ -380,31 +379,31 @@ function mmMakeLabel(node,li,icon){
   var mmClickT;
   txt.onclick=function(){if(mmClickT){clearTimeout(mmClickT);mmClickT=null;return;}mmClickT=setTimeout(function(){mmClickT=null;var nd=!node.done;node.done=nd;if(node.children)node.children.forEach(function(c){c.done=nd;});mmSave();mmRender();},220);};
   txt.ondblclick=function(e){if(mmClickT){clearTimeout(mmClickT);mmClickT=null;}e.stopPropagation();txt.style.display='none';inp.style.display='';inp.focus();inp.select();};
-  inp.onblur=function(){node.label=inp.value||'节点';mmSave();txt.textContent=node.label;txt.style.display='';inp.style.display='none';};
+  inp.onblur=function(){node.label=inp.value||'鑺傜偣';mmSave();txt.textContent=node.label;txt.style.display='';inp.style.display='none';};
   inp.onkeydown=function(e){if(e.key==='Enter')inp.blur();};
   wrap.appendChild(txt);wrap.appendChild(inp);
   return wrap;
 }
 function mmRender(){
   var list=document.getElementById('mmList');list.innerHTML='';
-  if(!mmData.children||!mmData.children.length){var e=document.createElement('li');e.className='mm-empty';e.textContent='添加一些日常任务吧';list.appendChild(e);return;}
+  if(!mmData.children||!mmData.children.length){var e=document.createElement('li');e.className='mm-empty';e.textContent='娣诲姞涓€浜涙棩甯镐换鍔″惂';list.appendChild(e);return;}
   mmData.children.forEach(function(p,i){
     var li=document.createElement('li');li.className='mm-parent'+(p.done?' done':'');
-    var arrow=document.createElement('button');arrow.className='mm-arrow'+(mmOpen[i]?' open':'');arrow.textContent='▶';arrow.onclick=function(){mmOpen[i]=!mmOpen[i];mmRender();};
+    var arrow=document.createElement('button');arrow.className='mm-arrow'+(mmOpen[i]?' open':'');arrow.textContent='鈻?;arrow.onclick=function(){mmOpen[i]=!mmOpen[i];mmRender();};
     li.appendChild(arrow);
-    var icon=document.createElement('span');icon.className='mm-icon';icon.textContent=p.done?'✓':'';icon.onclick=function(){var nd=!p.done;p.done=nd;if(p.children)p.children.forEach(function(c){c.done=nd;});mmSave();mmRender();};
+    var icon=document.createElement('span');icon.className='mm-icon';icon.textContent=p.done?'鉁?:'';icon.onclick=function(){var nd=!p.done;p.done=nd;if(p.children)p.children.forEach(function(c){c.done=nd;});mmSave();mmRender();};
     li.appendChild(icon);
     li.appendChild(mmMakeLabel(p,li,icon));
-    var addBtn=document.createElement('button');addBtn.className='mm-add-child';addBtn.textContent='+';addBtn.title='添加子任务';addBtn.onclick=function(){if(!p.children)p.children=[];p.children.push({label:'子任务',done:false});mmOpen[i]=true;mmSave();mmRender();};
+    var addBtn=document.createElement('button');addBtn.className='mm-add-child';addBtn.textContent='+';addBtn.title='娣诲姞瀛愪换鍔?;addBtn.onclick=function(){if(!p.children)p.children=[];p.children.push({label:'瀛愪换鍔?,done:false});mmOpen[i]=true;mmSave();mmRender();};
     li.appendChild(addBtn);
-    var delBtn=document.createElement('button');delBtn.className='mm-del';delBtn.textContent='✕';delBtn.onclick=function(){mmData.children.splice(i,1);mmSave();mmRender();};
+    var delBtn=document.createElement('button');delBtn.className='mm-del';delBtn.textContent='鉁?;delBtn.onclick=function(){mmData.children.splice(i,1);mmSave();mmRender();};
     li.appendChild(delBtn);
     list.appendChild(li);
     if(p.children&&p.children.length&&mmOpen[i]){
       var childUl=document.createElement('ul');childUl.className='mm-child';
       p.children.forEach(function(c,j){
         var cli=document.createElement('li');cli.className=c.done?'done':'';
-        var ci=document.createElement('span');ci.className='mm-icon';ci.textContent=c.done?'✓':'';ci.onclick=function(){c.done=!c.done;var ad=true;for(var k=0;k<p.children.length;k++){if(!p.children[k].done){ad=false;break;}}p.done=ad;mmSave();mmRender();};
+        var ci=document.createElement('span');ci.className='mm-icon';ci.textContent=c.done?'鉁?:'';ci.onclick=function(){c.done=!c.done;var ad=true;for(var k=0;k<p.children.length;k++){if(!p.children[k].done){ad=false;break;}}p.done=ad;mmSave();mmRender();};
         cli.appendChild(ci);
         var cwrap=document.createElement('span');cwrap.style.cssText='flex:1;display:flex;align-items:center;min-width:0';
         var ctxt=document.createElement('span');ctxt.className='mm-label';ctxt.textContent=c.label;
@@ -412,11 +411,11 @@ function mmRender(){
         var ctClickT;
         ctxt.onclick=function(){if(ctClickT){clearTimeout(ctClickT);ctClickT=null;return;}ctClickT=setTimeout(function(){ctClickT=null;c.done=!c.done;var ad=true;for(var k=0;k<p.children.length;k++){if(!p.children[k].done){ad=false;break;}}p.done=ad;mmSave();mmRender();},220);};
         ctxt.ondblclick=function(e){if(ctClickT){clearTimeout(ctClickT);ctClickT=null;}e.stopPropagation();ctxt.style.display='none';cinp.style.display='';cinp.focus();cinp.select();};
-        cinp.onblur=function(){c.label=cinp.value||'节点';mmSave();ctxt.textContent=c.label;ctxt.style.display='';cinp.style.display='none';};
+        cinp.onblur=function(){c.label=cinp.value||'鑺傜偣';mmSave();ctxt.textContent=c.label;ctxt.style.display='';cinp.style.display='none';};
         cinp.onkeydown=function(e){if(e.key==='Enter')cinp.blur();};
         cwrap.appendChild(ctxt);cwrap.appendChild(cinp);
         cli.appendChild(cwrap);
-        var cd=document.createElement('button');cd.className='mm-del';cd.textContent='✕';cd.onclick=function(){p.children.splice(j,1);mmSave();mmRender();};
+        var cd=document.createElement('button');cd.className='mm-del';cd.textContent='鉁?;cd.onclick=function(){p.children.splice(j,1);mmSave();mmRender();};
         cli.appendChild(cd);
         childUl.appendChild(cli);
       });
@@ -424,20 +423,20 @@ function mmRender(){
     }
   });
 }
-function mmAddParent(){if(!mmData.children)mmData.children=[];mmData.children.push({label:'分类',done:false,children:[]});mmSave();mmRender();}
+function mmAddParent(){if(!mmData.children)mmData.children=[];mmData.children.push({label:'鍒嗙被',done:false,children:[]});mmSave();mmRender();}
 mmRender();
 
-// ===================== 可选任务（链接） =====================
+// ===================== 鍙€変换鍔★紙閾炬帴锛?=====================
 function rl(){
   var l=document.getElementById('linkList'),ls=ld('links',[]);l.innerHTML='';
-  if(!ls.length){var e=document.createElement('li');e.className='link-empty';e.textContent='添加一些常用网址吧';l.appendChild(e);return;}
+  if(!ls.length){var e=document.createElement('li');e.className='link-empty';e.textContent='娣诲姞涓€浜涘父鐢ㄧ綉鍧€鍚?;l.appendChild(e);return;}
   var cs=[{bg:'#ebf9f0',fg:'#1d9e75'},{bg:'#e6f1fb',fg:'#185fa5'},{bg:'#faeeda',fg:'#854f0b'},{bg:'#f5f3ff',fg:'#534ab7'},{bg:'#fbeaf0',fg:'#993556'},{bg:'#fcebeb',fg:'#a32d2d'}];
   ls.forEach(function(li,i){
     var el=document.createElement('li');
     var b=document.createElement('span');b.className='link-badge';b.style.background=cs[i%cs.length].bg;b.style.color=cs[i%cs.length].fg;b.textContent=li.name.charAt(0).toUpperCase();
     var n=document.createElement('span');n.className='link-name';n.textContent=li.name;
-    var u=document.createElement('a');u.className='link-url-text';u.href=li.url;u.target='_blank';u.rel='noopener noreferrer';u.textContent='↗ '+li.url;
-    var d=document.createElement('button');d.className='link-del';d.textContent='✕';d.onclick=function(e){e.stopPropagation();ls.splice(i,1);sd('links',ls);rl();};
+    var u=document.createElement('a');u.className='link-url-text';u.href=li.url;u.target='_blank';u.rel='noopener noreferrer';u.textContent='鈫?'+li.url;
+    var d=document.createElement('button');d.className='link-del';d.textContent='鉁?;d.onclick=function(e){e.stopPropagation();ls.splice(i,1);sd('links',ls);rl();};
     el.appendChild(b);el.appendChild(n);el.appendChild(u);el.appendChild(d);l.appendChild(el);
   });
 }
@@ -451,15 +450,15 @@ document.getElementById('linkUrlInput').addEventListener('keydown',function(e){i
 document.getElementById('linkNameInput').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('linkUrlInput').focus();});
 rl();
 
-// ===================== 语录 =====================
+// ===================== 璇綍 =====================
 function lq(){document.getElementById('quoteArea').value=ld('quote','');uq();}
 function sq(){sd('quote',document.getElementById('quoteArea').value);uq();}
-function uq(){var t=document.getElementById('quoteArea').value,l=t.length,w=t.trim()?t.trim().split(/[\s\n]+/).length:0;document.getElementById('quoteCount').textContent=l+' 字'+(w?' · '+w+' 词':'');}
-function cq(){if(document.getElementById('quoteArea').value.trim()&&!confirm('确定清空语录吗？'))return;document.getElementById('quoteArea').value='';sq();}
+function uq(){var t=document.getElementById('quoteArea').value,l=t.length,w=t.trim()?t.trim().split(/[\s\n]+/).length:0;document.getElementById('quoteCount').textContent=l+' 瀛?+(w?' 路 '+w+' 璇?:'');}
+function cq(){if(document.getElementById('quoteArea').value.trim()&&!confirm('纭畾娓呯┖璇綍鍚楋紵'))return;document.getElementById('quoteArea').value='';sq();}
 var qt;document.getElementById('quoteArea').addEventListener('input',function(){clearTimeout(qt);qt=setTimeout(sq,400);});lq();
 
-// ===================== 手动同步按钮 =====================
-function syncAll(){var ks=['incomes','mainTasks','mindmap','mmDate','mtDate','devTasks','devDate','devTaskHistory','taskHistory','links','quote','profits'];ks.forEach(function(k){var d=ld(k,null);if(d!==null){sd(k,d);}});document.getElementById('syncBtn').textContent='☁️';setTimeout(function(){document.getElementById('syncBtn').textContent='☁';},2000);}
+// ===================== 鎵嬪姩鍚屾鎸夐挳 =====================
+function syncAll(){var ks=['incomes','mainTasks','mindmap','mmDate','mtDate','devTasks','devDate','devTaskHistory','taskHistory','links','quote','profits'];ks.forEach(function(k){var d=ld(k,null);if(d!==null){sd(k,d);}});document.getElementById('syncBtn').textContent='鈽侊笍';setTimeout(function(){document.getElementById('syncBtn').textContent='鈽?;},2000);}
 </script>
 </body>
 </html>
